@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".SignupActivity"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@drawable/background">
+
+    <!-- firstNameSignUpPage -->
+    <TextView
+        android:id="@+id/edtTxtFirstName"
+        android:layout_width="284dp"
+        android:layout_height="41dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="64dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="127dp"
+        android:background="@drawable/edit_txt_background"
+        android:hint="First Name"
+        style="@style/sign_up"
+        android:paddingLeft="10dp"
+        android:paddingTop="5dp"
+        android:alpha=".7"
+        android:drawableLeft="@drawable/baseline_play_arrow_black_18dp"
+        android:drawablePadding="10dp"
+
+        />
+
+    <TextView
+        android:id="@+id/edtTxtLastName"
+        android:layout_width="284dp"
+        android:layout_height="41dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="64dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="187dp"
+        android:background="@drawable/edit_txt_background"
+        android:hint="Last Name"
+        style="@style/sign_up"
+        android:paddingTop="5dp"
+        android:paddingLeft="10dp"
+        android:alpha=".7"
+        android:drawableLeft="@drawable/baseline_play_arrow_black_18dp"
+        android:drawablePadding="10dp" />
+
+    <TextView
+        android:id="@+id/edtTxtEmailId"
+        android:layout_width="284dp"
+        android:layout_height="41dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="65dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="247dp"
+        android:inputType="textEmailAddress"
+        android:background="@drawable/edit_txt_background"
+        android:drawableLeft="@drawable/baseline_account_circle_black_18dp"
+        android:drawablePadding="10dp"
+        android:paddingLeft="10dp"
+        android:hint="EmailId"
+        android:alpha=".7"
+        style="@style/sign_up"
+        android:paddingTop="5dp" />
+
+    <TextView
+        android:id="@+id/edtTxtPassword"
+        android:inputType="textPassword"
+        android:layout_width="284dp"
+        android:layout_height="41dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="64dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="307dp"
+        android:background="@drawable/edit_txt_background"
+        android:alpha=".7"
+        android:drawableLeft="@drawable/baseline_lock_black_18dp"
+        android:drawablePadding="10dp"
+        android:paddingLeft="10dp"
+        android:hint="Password"
+        style="@style/sign_in"
+        android:paddingTop="2pt" />
+
+    <TextView
+        android:id="@+id/confirmpass"
+        android:layout_width="284dp"
+        android:layout_height="41dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="65dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="367dp"
+        android:background="@drawable/edit_txt_background"
+        android:alpha=".7"
+        android:drawableLeft="@drawable/baseline_lock_black_18dp"
+        android:drawablePadding="10dp"
+        android:paddingLeft="10dp"
+        android:hint="Confirm Password"
+        style="@style/sign_in"
+        android:paddingTop="2pt" />
+
+    <Button
+        android:id="@+id/btnSignUp2"
+        android:layout_width="226dp"
+        android:layout_height="51dp"
+        android:layout_alignParentLeft="true"
+        android:layout_marginLeft="93dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="437dp"
+        android:background="@drawable/sign_up"
+        android:elevation="4dp"
+        android:text="@string/sign_up"
+        style="@style/sign_up" />
+
+
+</RelativeLayout>
