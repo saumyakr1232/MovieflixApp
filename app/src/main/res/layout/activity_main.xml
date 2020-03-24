@@ -1,46 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".MainActivity"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:background="@drawable/background">
-    <!-- logo -->
-    <ImageView
-        android:id="@+id/ingViewLogo"
-        android:layout_width="226dp"
-        android:layout_height="198dp"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="92dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="104dp"
-        android:background="@drawable/ic_launcher_foreground" />
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/background2"
+    tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/btnSignIn"
-        android:layout_width="226dp"
-        android:layout_height="51dp"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="94dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="471dp"
-        android:background="@drawable/sign_in_"
-        android:text="@string/sign_in"
-        style="@style/sign_in"
-        android:elevation="4dp" />
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true">
 
-    <Button
-        android:id="@+id/btnSignUp"
-        android:layout_width="226dp"
-        android:layout_height="51dp"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="92dp"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="545dp"
-        android:background="@drawable/sign_up"
-        android:elevation="4dp"
-        android:text="@string/sign_up"
-        style="@style/sign_up" />
+        <ImageView
+            android:id="@+id/ingViewLogo"
+            android:layout_width="226dp"
+            android:layout_height="198dp"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/ic_launcher_foreground" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ingViewLogo"
+            android:layout_marginTop="40dp"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="40dp">
+
+            <Button
+                android:id="@+id/btnSignIn"
+                style="@style/sign_in"
+                android:layout_width="226dp"
+                android:layout_height="51dp"
+                android:background="@drawable/sign_in_"
+                android:elevation="4dp"
+                android:text="@string/sign_in" />
+
+            <Button
+                android:id="@+id/btnSignUp"
+                style="@style/sign_up"
+                android:layout_width="226dp"
+                android:layout_height="51dp"
+                android:background="@drawable/sign_up"
+                android:elevation="4dp"
+                android:text="@string/sign_up"
+                android:layout_marginTop="20dp"
+                android:layout_below="@+id/btnSignIn" />
+
+
+        </RelativeLayout>
+
+    </RelativeLayout>
 
 
 </RelativeLayout>
