@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:title="My List"
+        android:id="@+id/myList"
+        android:icon="@drawable/ic_my_list" />
+    <item
+        android:title="Genre"
+        android:id="@+id/genre"
+        android:icon="@drawable/ic_genre" />
+    <item
+        android:title="About us"
+        android:id="@+id/about"
+        android:icon="@drawable/ic_info" />
+    <item
+        android:title="Terms"
+        android:id="@+id/terms"
+        android:icon="@drawable/ic_face" />
+    <item
+        android:title="Licenses"
+        android:id="@+id/licenses"
+        android:icon="@drawable/ic_clip" />
+</menu>

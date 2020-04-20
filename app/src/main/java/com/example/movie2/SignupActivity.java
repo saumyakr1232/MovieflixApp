@@ -30,8 +30,9 @@ public class SignupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-
         widgets();
+
+
         mAuth = FirebaseAuth.getInstance();
 
         btnSignUp2.setOnClickListener(new View.OnClickListener() {
@@ -82,6 +83,7 @@ public class SignupActivity extends AppCompatActivity {
         edtTxtPass = (EditText) findViewById(R.id.edtTxtPassword);
         edtTxtConfPass = (EditText) findViewById(R.id.edtTxtConfPass);
         textView = (TextView) findViewById(R.id.txtViewSignIn);
+
     }
 
 
