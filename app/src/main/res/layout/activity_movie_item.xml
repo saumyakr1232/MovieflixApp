@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MovieItemActivity">
+
+    <Button
+        android:id="@+id/btnAddToWatchList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="15dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginRight="15dp"
+        android:text="@string/add_to_watchlist"
+        style="@style/sign_in"
+        android:background="@drawable/sign_in_" />
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nestedScrollView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/btnAddToWatchList"
+        android:layout_marginTop="10dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:id="@+id/firstRelLayout">
+
+                <ImageView
+                    android:id="@+id/itemImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="190dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:background="@color/colorPrimary" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_above="@id/txtYOR"
+                    android:text="title of the movie"
+                    android:layout_marginLeft="10dp"
+                    android:id="@+id/txtTitleOfMovie"
+                    android:textSize="30sp"
+                    style="@style/sign_in" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="2020"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="20dp"
+                    android:layout_marginBottom="5dp"
+                    android:id="@+id/txtYOR"
+                    style="@style/sign_in"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/txtRuntime"
+                    android:layout_toRightOf="@+id/txtYOR"
+                    android:text="runtime"
+                    android:layout_marginBottom="5dp"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="20dp"
+                    android:textSize="16sp"
+                    style="@style/sign_in" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/secondRelLayout"
+                android:layout_below="@id/firstRelLayout"
+                android:layout_marginTop="20dp">
+
+                <ImageView
+                    android:layout_width="120dp"
+                    android:layout_height="180dp"
+                    android:src="@color/colorPrimary"
+                    android:id="@+id/imgItemPoster" />
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="180dp"
+                    android:id="@+id/genreRelLayout"
+                    android:layout_toRightOf="@id/imgItemPoster"
+                    android:layout_marginLeft="20dp">
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/genreRecView"
+                        android:layout_width="230dp"
+                        android:layout_height="50dp"
+                        android:layout_marginRight="10dp" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/txtDescription"
+                        android:text="Description"
+                        android:layout_marginRight="10dp"
+                        android:layout_below="@id/genreRecView" />
+                </RelativeLayout>
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:layout_below="@id/secondRelLayout"
+                android:id="@+id/thirdRelLayout"
+                android:layout_marginTop="10dp">
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="10dp">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_filled_star"
+                        android:id="@+id/filledStar"
+                        android:layout_marginTop="5dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="stars"
+                        android:layout_below="@+id/filledStar"
+                        android:id="@+id/txtRatingOutOf" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/txtNoOfpeopleRated"
+                        android:text="points"
+                        android:layout_below="@id/txtRatingOutOf" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/rateThisRelLayout">
+
+                    <ImageView
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:src="@drawable/ic_empty_star"
+                        android:id="@+id/emptyStar"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="5dp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="RATE THIS"
+                        android:layout_below="@id/emptyStar" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="30dp"
+                    android:layout_centerVertical="true">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="51"
+                        android:id="@+id/txtMetascore"
+                        android:layout_centerHorizontal="true"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Metascore"
+                        android:layout_below="@id/txtMetascore" />
+
+                </RelativeLayout>
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/forthRelLayout"
+                android:layout_below="@id/thirdRelLayout"
+                android:layout_marginTop="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Top Billed Cast"
+                    android:id="@+id/txtCast"
+                    android:textSize="20sp"
+                    android:layout_marginLeft="15dp"
+                    android:textStyle="bold" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/castRecView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@id/txtCast" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Directors"
+                    android:layout_marginTop="20dp"
+                    android:layout_below="@+id/castRecView"
+                    android:id="@+id/txtDirectors"
+                    android:layout_marginLeft="15dp"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="director names"
+                    android:layout_below="@+id/txtDirectors"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="15dp"
+                    android:id="@+id/txtDetailsDirectors" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Writers"
+                    android:layout_below="@+id/txtDetailsDirectors"
+                    android:textSize="18sp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="15dp"
+
+                    android:id="@+id/txtWriters" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="details of writers"
+                    android:id="@+id/txtDetailsWriters"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="15dp"
+                    android:layout_below="@id/txtWriters" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="180dp"
+                android:layout_below="@+id/forthRelLayout"
+                android:layout_marginTop="20dp"
+                android:id="@+id/fifthRelLayout">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+
+                    android:text="User Review"
+                    android:textSize="20sp"
+                    android:layout_marginLeft="20dp"
+                    android:id="@+id/txtUserReview" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/reviewRecView"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@id/txtUserReview" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Add Review"
+                    android:id="@+id/txtAddReviews"
+                    android:textColor="@color/colorPrimary"
+                    android:layout_below="@id/reviewRecView"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginLeft="20dp" />
+
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/sixthRelLayout"
+                android:layout_below="@id/fifthRelLayout"
+                android:layout_marginTop="20dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="More Like This"
+                    android:textSize="20sp"
+                    android:layout_marginLeft="20dp"
+                    android:id="@+id/txtMoreLikeThis" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/moreLikeThisRecView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_below="@id/txtMoreLikeThis" />
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+
+</RelativeLayout>

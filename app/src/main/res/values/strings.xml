@@ -2,6 +2,7 @@
     <string name="app_name">LOL</string>
     <string name="sign_in">SIGN IN</string>
     <string name="sign_up">SIGN UP</string>
+    <string name="add_to_watchlist">ADD TO WATCHLIST</string>
 
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>

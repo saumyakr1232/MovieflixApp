@@ -11,15 +11,26 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.movie2.Model.MovieItems;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
 
 public class MainFragment extends Fragment {
     private static final String TAG = "MainFragment";
     private BottomNavigationView bottomNavigationView;
 
     private RecyclerView newItemsRecView, popularItemsRecView, suggestedItemsRecView, trendingRecView;
+
+    private MovieItemAdapter newMoviesItemAdapter, TrendingMoviesItemAdapter, suggestedMovieItemAdapter, popularMoviesItemAdapter;
+
+    private Utils utils;
 
     @Nullable
     @Override
@@ -29,7 +40,79 @@ public class MainFragment extends Fragment {
 
         initBottomNavigation();
 
+        utils = new Utils(getActivity());
+        utils.initDataBase();
+
+
+        initRecView();
+
+
+
+
+
+
+
         return view;
+    }
+
+    private void initRecView() {
+        Log.d(TAG, "initRecView: called");
+
+        newMoviesItemAdapter = new MovieItemAdapter(getActivity());
+        TrendingMoviesItemAdapter = new MovieItemAdapter(getActivity());
+        suggestedMovieItemAdapter = new MovieItemAdapter(getActivity());
+        popularMoviesItemAdapter = new MovieItemAdapter(getActivity());
+
+        newItemsRecView.setAdapter(newMoviesItemAdapter);
+        trendingRecView.setAdapter(TrendingMoviesItemAdapter);
+        suggestedItemsRecView.setAdapter(suggestedMovieItemAdapter);
+        popularItemsRecView.setAdapter(popularMoviesItemAdapter);
+
+        newItemsRecView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
+        trendingRecView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
+        suggestedItemsRecView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
+        popularItemsRecView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
+
+        ArrayList<MovieItems> allItems = utils.getAllItems(getActivity());
+        ArrayList<MovieItems> newItems = utils.getNewItems(getActivity());
+        ArrayList<MovieItems> trendingItems = utils.getTrendingItems(getActivity());
+        if (null != allItems) {
+            popularMoviesItemAdapter.setItems(allItems);
+        }
+        if (null != newItems) {
+            newMoviesItemAdapter.setItems(newItems);
+            suggestedMovieItemAdapter.setItems(newItems);
+        }
+        if (null != trendingItems) {
+            TrendingMoviesItemAdapter.setItems(trendingItems);
+        }
+
+        Comparator<MovieItems> popularityComparator = new Comparator<MovieItems>() {
+            @Override
+            public int compare(MovieItems o1, MovieItems o2) {
+                return comparePopularity(o1, o2);
+            }
+        };
+        Comparator<MovieItems> reversePopularityPoint = Collections.reverseOrder(popularityComparator);
+        assert allItems != null;
+        Collections.sort(allItems, reversePopularityPoint);
+        popularMoviesItemAdapter.setItems(allItems);
+
+
+    }
+
+    private int comparePopularity(MovieItems item1, MovieItems item2) {
+        Log.d(TAG, "comparePopularity: called");
+        if (item1.getPopularity() > item2.getPopularity()) {
+            return 1;
+        } else if (item1.getPopularity() < item2.getPopularity()) {
+            return -1;
+
+        } else {
+            return 0;
+        }
+
+
     }
 
     @Override

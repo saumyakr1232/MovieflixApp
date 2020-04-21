@@ -1,8 +1,11 @@
-package com.example.movie2;
+package com.example.movie2.Model;
+
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.util.Arrays;
 
-public class MovieItems {
+public class MovieItems implements Parcelable {
     private String poster_path;
     private boolean adult;
     private String overview;
@@ -20,7 +23,12 @@ public class MovieItems {
     private int total_pages;
     private int total_result;
 
-    public MovieItems(String poster_path, boolean adult, String overview, String release_date, int[] genre_ids, int id, String original_title, String original_language, String title, String backdrop_path, double popularity, int vote_count, boolean video, double vote_average, int total_pages, int total_result) {
+    public MovieItems(String poster_path, boolean adult, String overview,
+                      String release_date, int[] genre_ids, int id,
+                      String original_title, String original_language,
+                      String title, String backdrop_path, double popularity,
+                      int vote_count, boolean video, double vote_average,
+                      int total_pages, int total_result) {
         this.poster_path = poster_path;
         this.adult = adult;
         this.overview = overview;
@@ -38,6 +46,37 @@ public class MovieItems {
         this.total_pages = total_pages;
         this.total_result = total_result;
     }
+
+    protected MovieItems(Parcel in) {
+        poster_path = in.readString();
+        adult = in.readByte() != 0;
+        overview = in.readString();
+        release_date = in.readString();
+        genre_ids = in.createIntArray();
+        id = in.readInt();
+        original_title = in.readString();
+        original_language = in.readString();
+        title = in.readString();
+        backdrop_path = in.readString();
+        popularity = in.readDouble();
+        vote_count = in.readInt();
+        video = in.readByte() != 0;
+        vote_average = in.readDouble();
+        total_pages = in.readInt();
+        total_result = in.readInt();
+    }
+
+    public static final Creator<MovieItems> CREATOR = new Creator<MovieItems>() {
+        @Override
+        public MovieItems createFromParcel(Parcel in) {
+            return new MovieItems(in);
+        }
+
+        @Override
+        public MovieItems[] newArray(int size) {
+            return new MovieItems[size];
+        }
+    };
 
     public String getPoster_path() {
         return poster_path;
@@ -187,5 +226,30 @@ public class MovieItems {
                 ", total_pages=" + total_pages +
                 ", total_result=" + total_result +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(poster_path);
+        dest.writeByte((byte) (adult ? 1 : 0));
+        dest.writeString(overview);
+        dest.writeString(release_date);
+        dest.writeIntArray(genre_ids);
+        dest.writeInt(id);
+        dest.writeString(original_title);
+        dest.writeString(original_language);
+        dest.writeString(title);
+        dest.writeString(backdrop_path);
+        dest.writeDouble(popularity);
+        dest.writeInt(vote_count);
+        dest.writeByte((byte) (video ? 1 : 0));
+        dest.writeDouble(vote_average);
+        dest.writeInt(total_pages);
+        dest.writeInt(total_result);
     }
 }

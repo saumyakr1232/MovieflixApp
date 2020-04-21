@@ -20,16 +20,16 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/detailsTrending"
                 android:text="Trending"
-                android:textSize="16sp"
-                android:textStyle="italic"
-                android:textColor="#C10F0F" />
+                android:layout_marginLeft="10dp"
+                android:textSize="25sp"
+                android:textStyle="bold" />
             <!--new items rec view-->
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/trendingRecView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/detailsTrending"
-                android:layout_marginTop="0dp" />
+                android:layout_marginTop="10dp" />
 
 
             <TextView
@@ -37,9 +37,9 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/detailsNewMovies"
                 android:text="New Movies"
-                android:textSize="16sp"
-                android:textStyle="italic"
-                android:textColor="#C10F0F"
+                android:layout_marginLeft="10dp"
+                android:textSize="25sp"
+                android:textStyle="bold"
                 android:layout_below="@+id/trendingRecView" />
             <!--new items rec view-->
 
@@ -49,18 +49,18 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/detailsNewMovies"
-                android:layout_marginTop="0dp" />
+                android:layout_marginTop="10dp" />
 
             <TextView
                 android:id="@+id/detailsPopular"
                 android:layout_width="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/newItemsRecView"
                 android:layout_marginTop="15dp"
                 android:text="Popular Movies"
-                android:textSize="16sp"
-                android:textColor="#C10F0F"
-                android:textStyle="italic" />
+                android:textSize="25sp"
+                android:textStyle="bold" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/popularMovies"
@@ -73,12 +73,12 @@
                 android:id="@+id/detailsSuggested"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:layout_below="@+id/popularMovies"
                 android:layout_marginTop="15dp"
                 android:text="Suggested Movies"
-                android:textSize="16sp"
-                android:textColor="#C10F0F"
-                android:textStyle="italic" />
+                android:textSize="25sp"
+                android:textStyle="bold" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/suggestedItems"
