@@ -1,13 +1,16 @@
 package com.example.movie2.Model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Arrays;
 
-public class MovieDetails {
+public class MovieDetails implements Parcelable {
     private boolean adult;
     private String backdrop_path;
     private Belong_to_collection belongs_to_collection;
     private int budget;
-    private Genres[] genres;
+    private Genre[] genres;
     private String homepage;
     private int id;
     private String imdb_id;
@@ -32,6 +35,72 @@ public class MovieDetails {
     public MovieDetails() {
     }
 
+    protected MovieDetails(Parcel in) {
+        adult = in.readByte() != 0;
+        backdrop_path = in.readString();
+        budget = in.readInt();
+        genres = in.createTypedArray(Genre.CREATOR);
+        homepage = in.readString();
+        id = in.readInt();
+        imdb_id = in.readString();
+        original_language = in.readString();
+        original_title = in.readString();
+        overview = in.readString();
+        popularity = in.readString();
+        poster_path = in.readString();
+        release_date = in.readString();
+        revenue = in.readInt();
+        runtime = in.readInt();
+        status = in.readString();
+        tagline = in.readString();
+        title = in.readString();
+        video = in.readByte() != 0;
+        vote_average = in.readDouble();
+        vote_count = in.readInt();
+    }
+
+    public static final Creator<MovieDetails> CREATOR = new Creator<MovieDetails>() {
+        @Override
+        public MovieDetails createFromParcel(Parcel in) {
+            return new MovieDetails(in);
+        }
+
+        @Override
+        public MovieDetails[] newArray(int size) {
+            return new MovieDetails[size];
+        }
+    };
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeByte((byte) (adult ? 1 : 0));
+        dest.writeString(backdrop_path);
+        dest.writeInt(budget);
+        dest.writeTypedArray(genres, flags);
+        dest.writeString(homepage);
+        dest.writeInt(id);
+        dest.writeString(imdb_id);
+        dest.writeString(original_language);
+        dest.writeString(original_title);
+        dest.writeString(overview);
+        dest.writeString(popularity);
+        dest.writeString(poster_path);
+        dest.writeString(release_date);
+        dest.writeInt(revenue);
+        dest.writeInt(runtime);
+        dest.writeString(status);
+        dest.writeString(tagline);
+        dest.writeString(title);
+        dest.writeByte((byte) (video ? 1 : 0));
+        dest.writeDouble(vote_average);
+        dest.writeInt(vote_count);
+    }
+
     class Belong_to_collection {
         public int id;
         public String name;
@@ -43,10 +112,6 @@ public class MovieDetails {
         this.belongs_to_collection = belongs_to_collection;
     }
 
-    class Genres {
-        public String id;
-        public String name;
-    }
 
     class Production_companies {
         public String name;
@@ -66,7 +131,7 @@ public class MovieDetails {
     }
 
     public MovieDetails(boolean adult, String backdrop_path, Belong_to_collection belongs_to_collection,
-                        int budget, Genres[] genres, String homepage, int id, String imdb_id,
+                        int budget, Genre[] genres, String homepage, int id, String imdb_id,
                         String original_language, String original_title, String overview, String popularity,
                         String poster_path, Production_companies[] production_companies,
                         Production_countries[] production_countries, String release_date, int revenue,
@@ -125,11 +190,11 @@ public class MovieDetails {
         this.budget = budget;
     }
 
-    public Genres[] getGenres() {
+    public Genre[] getGenres() {
         return genres;
     }
 
-    public void setGenres(Genres[] genres) {
+    public void setGenres(Genre[] genres) {
         this.genres = genres;
     }
 

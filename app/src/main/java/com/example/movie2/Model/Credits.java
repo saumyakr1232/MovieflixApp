@@ -1,8 +1,11 @@
 package com.example.movie2.Model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.Arrays;
 
-public class Credits {
+public class Credits implements Parcelable {
     private int id;
     private Cast[] cast;
     private Crew[] crew;
@@ -18,6 +21,23 @@ public class Credits {
         this.crew = crew;
 
     }
+
+    protected Credits(Parcel in) {
+        id = in.readInt();
+        cast = in.createTypedArray(Cast.CREATOR);
+    }
+
+    public static final Creator<Credits> CREATOR = new Creator<Credits>() {
+        @Override
+        public Credits createFromParcel(Parcel in) {
+            return new Credits(in);
+        }
+
+        @Override
+        public Credits[] newArray(int size) {
+            return new Credits[size];
+        }
+    };
 
     public int getId() {
         return id;
@@ -50,5 +70,16 @@ public class Credits {
                 ", cast=" + Arrays.toString(cast) +
                 ", crew=" + Arrays.toString(crew) +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeTypedArray(cast, flags);
     }
 }

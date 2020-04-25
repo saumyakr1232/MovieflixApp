@@ -1,6 +1,7 @@
 package com.example.movie2;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -9,17 +10,25 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.movie2.Model.Cast;
+import com.example.movie2.Model.Credits;
+import com.example.movie2.Model.Crew;
+import com.example.movie2.Model.Genre;
 import com.example.movie2.Model.MovieDetails;
 import com.example.movie2.Model.MovieItems;
-import com.google.gson.Gson;
+import com.example.movie2.Model.Review;
+import com.example.movie2.Model.SingleReview;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 
 public class MovieItemActivity extends AppCompatActivity {
@@ -31,11 +40,16 @@ public class MovieItemActivity extends AppCompatActivity {
     private RelativeLayout rateThisRelLayout;
 
     private MovieItemAdapter similarMovieItemAdapter;
+    private CastItemAdapter castItemAdapter;
+    private GenreItemAdapter genreItemAdapter;
+    private ReviewRecViewAdapter reviewRecViewAdapter;
 
 
     private MovieDetails movieDetails;
     private MovieItems incomingItem;
     private String incomingId;
+
+    Utils utils;
 
 
     @Override
@@ -53,10 +67,10 @@ public class MovieItemActivity extends AppCompatActivity {
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-        Gson gson = new Gson();
 
 
     }
+
 
     private void setViewsValues(Context context) {
         Log.d(TAG, "setViewsValues: started");
@@ -84,10 +98,84 @@ public class MovieItemActivity extends AppCompatActivity {
                 //TODO : RAte item
             }
         });
-        Utils utils = new Utils(this);
+        utils = new Utils(this);
+
         movieDetails = utils.getMovieDetails(String.valueOf(incomingItem.getId()));
-        setRecViews();
+
+
         txtRuntime.setText(String.valueOf(movieDetails.getRuntime()));
+
+        Credits credits = utils.getCredits(String.valueOf(incomingItem.getId()));
+        Crew[] crews = credits.getCrew();
+
+        for (Crew crew : crews
+        ) {
+            if (crew.getJob().equals("Director")) {
+                txtDetailsDirectors.setText(crew.getName());
+                break;
+            }
+
+        }
+        for (Crew crew : crews
+        ) {
+            if (crew.getJob().equals("Screenplay")) {
+                txtDetailsWriters.setText(crew.getName());
+                break;
+            }
+
+        }
+        btnAddToWatchList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MovieItems item = incomingItem;
+
+                ArrayList<MovieItems> wantToWatch = utils.getWantToWatchMovies();
+                if (wantToWatch != null) {
+                    Log.d(TAG, "onClick: wantToWatch " + wantToWatch.toString());
+
+
+                    boolean flag = false;
+
+                    for (MovieItems i : wantToWatch
+                    ) {
+                        if (i.getId() == item.getId()) {
+                            flag = true;
+                            break;
+                        }
+
+                    }
+                    if (flag) {
+                        AlertDialog.Builder builder = new AlertDialog.Builder(MovieItemActivity.this);
+                        builder.setMessage("You Already Added this Movie to your Watch List");
+
+                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        });
+                        builder.setCancelable(false);
+                        builder.create().show();
+
+
+                    } else {
+                        utils.addToWantToWatchMovies(item);
+                        Toast.makeText(MovieItemActivity.this, incomingItem.getTitle() + "is added to your Watch List", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+                    utils.addToWantToWatchMovies(item);
+                    Toast.makeText(MovieItemActivity.this, incomingItem.getTitle() + "is added to your Watch List", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
+        setRecViews();
 
 
     }
@@ -97,17 +185,61 @@ public class MovieItemActivity extends AppCompatActivity {
         Log.d(TAG, "setRecViews: called");
         Log.d(TAG, "setRecViews: incoming item" + String.valueOf(incomingItem.getId()));
         Utils utils = new Utils(this);
+
+        castItemAdapter = new CastItemAdapter(this);
+
+        castRecView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+        castRecView.setAdapter(castItemAdapter);
+
+        Credits credits = utils.getCredits(String.valueOf(incomingItem.getId()));
+
+        Cast[] casts = credits.getCast();
+
+        ArrayList<Cast> castItems = new ArrayList<>();
+
+        castItems.addAll(Arrays.asList(casts));
+
+        castItemAdapter.setItems(castItems);
+
         ArrayList<MovieItems> similarItems = utils.getSimilarItems(String.valueOf(incomingItem.getId()));
 
 
         similarMovieItemAdapter = new MovieItemAdapter(this);
-        moreLikeThisRecView.setAdapter(similarMovieItemAdapter);
         moreLikeThisRecView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+        moreLikeThisRecView.setAdapter(similarMovieItemAdapter);
+
         if (similarItems != null) {
             similarMovieItemAdapter.setItems(similarItems);
         } else {
             utils.findSimilarMovies(String.valueOf(incomingItem.getId()));
         }
+
+        genreItemAdapter = new GenreItemAdapter(this);
+        genreRecView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+        genreRecView.setAdapter(genreItemAdapter);
+
+        Genre[] genres = movieDetails.getGenres();
+        ArrayList<Genre> genresItems = new ArrayList<>();
+
+        genresItems.addAll(Arrays.asList(genres));
+
+        genreItemAdapter.setItems(genresItems);
+
+        reviewRecViewAdapter = new ReviewRecViewAdapter(this);
+        reviewRecView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+        reviewRecView.setAdapter(reviewRecViewAdapter);
+        Review review = utils.getReviews(String.valueOf(incomingItem.getId()));
+
+        SingleReview[] reviews = review.getResults();
+
+        Log.d(TAG, "setRecViews: reviews" + Arrays.toString(reviews));
+
+        ArrayList<SingleReview> reviewItems = new ArrayList<>();
+
+        reviewItems.addAll(Arrays.asList(reviews));
+
+        reviewRecViewAdapter.setItems(reviewItems);
+
     }
 
 

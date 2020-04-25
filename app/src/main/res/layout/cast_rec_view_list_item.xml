@@ -2,11 +2,12 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/parent"
-    android:layout_width="200dp"
-    android:layout_height="400dp"
+    android:layout_width="160dp"
+    android:layout_height="300dp"
     android:padding="7dp"
     app:cardElevation="2dp"
-    android:layout_margin="5dp">
+    android:layout_margin="5dp"
+    app:cardBackgroundColor="@color/colorPrimary">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -14,18 +15,18 @@
 
         <ImageView
             android:id="@+id/itemImage"
-            android:layout_width="200dp"
-            android:layout_height="280dp"
+            android:layout_width="match_parent"
+            android:layout_height="220dp"
             android:layout_marginBottom="20dp"
-
+            android:scaleType="centerCrop"
             android:src="@drawable/ic_launcher_background" />
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="50dp"
+            android:layout_height="20dp"
             android:text="name"
             android:layout_below="@id/itemImage"
-            android:layout_alignParentLeft="true"
+            android:layout_centerHorizontal="true"
             android:textSize="18sp"
             android:textStyle="bold"
             android:layout_marginLeft="15dp"
@@ -36,7 +37,9 @@
             android:layout_height="wrap_content"
             android:id="@+id/txtInMovieName"
             android:layout_below="@id/txtItemName"
-            android:text="charactername" />
+            android:text="charactername"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="10dp" />
 
 
     </RelativeLayout>

@@ -1,6 +1,9 @@
 package com.example.movie2.Model;
 
-public class Cast {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Cast implements Parcelable {
     public int cast_id;
     public String character;
     public String credit_id;
@@ -18,6 +21,28 @@ public class Cast {
         this.order = order;
         this.profile_path = profile_path;
     }
+
+    protected Cast(Parcel in) {
+        cast_id = in.readInt();
+        character = in.readString();
+        credit_id = in.readString();
+        gender = in.readInt();
+        name = in.readString();
+        order = in.readInt();
+        profile_path = in.readString();
+    }
+
+    public static final Creator<Cast> CREATOR = new Creator<Cast>() {
+        @Override
+        public Cast createFromParcel(Parcel in) {
+            return new Cast(in);
+        }
+
+        @Override
+        public Cast[] newArray(int size) {
+            return new Cast[size];
+        }
+    };
 
     public int getCast_id() {
         return cast_id;
@@ -86,5 +111,21 @@ public class Cast {
                 ", order=" + order +
                 ", profile_path='" + profile_path + '\'' +
                 '}';
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(cast_id);
+        dest.writeString(character);
+        dest.writeString(credit_id);
+        dest.writeInt(gender);
+        dest.writeString(name);
+        dest.writeInt(order);
+        dest.writeString(profile_path);
     }
 }

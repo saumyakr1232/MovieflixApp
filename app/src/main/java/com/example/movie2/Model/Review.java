@@ -3,10 +3,12 @@ package com.example.movie2.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.Arrays;
+
 public class Review implements Parcelable {
     private int id;
     private int page;
-    private Results results;
+    private SingleReview[] results;
     private int total_pages;
     private int total_results;
 
@@ -42,14 +44,7 @@ public class Review implements Parcelable {
         dest.writeInt(total_results);
     }
 
-    class Results {
-        public String id;
-        public String author;
-        public String content;
-        public String url;
-    }
-
-    public Review(int id, int page, Results results, int total_pages, int total_results) {
+    public Review(int id, int page, SingleReview[] results, int total_pages, int total_results) {
         this.id = id;
         this.page = page;
         this.results = results;
@@ -73,11 +68,11 @@ public class Review implements Parcelable {
         this.page = page;
     }
 
-    public Results getResults() {
+    public SingleReview[] getResults() {
         return results;
     }
 
-    public void setResults(Results results) {
+    public void setResults(SingleReview[] results) {
         this.results = results;
     }
 
@@ -102,7 +97,7 @@ public class Review implements Parcelable {
         return "Review{" +
                 "id=" + id +
                 ", page=" + page +
-                ", results=" + results +
+                ", results=" + Arrays.toString(results) +
                 ", total_pages=" + total_pages +
                 ", total_results=" + total_results +
                 '}';

@@ -38,9 +38,10 @@
                     android:id="@+id/itemImage"
                     android:layout_width="match_parent"
                     android:layout_height="190dp"
-                    android:layout_centerHorizontal="true"
                     android:layout_marginTop="10dp"
-                    android:background="@color/colorPrimary" />
+                    android:adjustViewBounds="true"
+                    android:background="@color/colorPrimary"
+                    android:scaleType="centerCrop" />
 
                 <TextView
                     android:layout_width="match_parent"
@@ -133,12 +134,14 @@
                         android:layout_height="30dp"
                         android:src="@drawable/ic_filled_star"
                         android:id="@+id/filledStar"
+                        android:layout_centerHorizontal="true"
                         android:layout_marginTop="5dp" />
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="stars"
+                        android:layout_centerHorizontal="true"
                         android:layout_below="@+id/filledStar"
                         android:id="@+id/txtRatingOutOf" />
 
@@ -147,6 +150,7 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/txtNoOfpeopleRated"
                         android:text="points"
+                        android:layout_centerHorizontal="true"
                         android:layout_below="@id/txtRatingOutOf" />
                 </RelativeLayout>
 
@@ -266,7 +270,7 @@
 
             <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="180dp"
+                android:layout_height="280dp"
                 android:layout_below="@+id/forthRelLayout"
                 android:layout_marginTop="20dp"
                 android:id="@+id/fifthRelLayout">
@@ -283,7 +287,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/reviewRecView"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp"
+                    android:layout_height="210dp"
                     android:layout_marginTop="10dp"
                     android:layout_below="@id/txtUserReview" />
 

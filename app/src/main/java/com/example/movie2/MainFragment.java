@@ -1,5 +1,6 @@
 package com.example.movie2;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -76,9 +77,6 @@ public class MainFragment extends Fragment {
         ArrayList<MovieItems> allItems = utils.getAllItems(getActivity());
         ArrayList<MovieItems> newItems = utils.getNewItems(getActivity());
         ArrayList<MovieItems> trendingItems = utils.getTrendingItems(getActivity());
-        if (null != allItems) {
-            popularMoviesItemAdapter.setItems(allItems);
-        }
         if (null != newItems) {
             newMoviesItemAdapter.setItems(newItems);
             suggestedMovieItemAdapter.setItems(newItems);
@@ -94,9 +92,12 @@ public class MainFragment extends Fragment {
             }
         };
         Comparator<MovieItems> reversePopularityPoint = Collections.reverseOrder(popularityComparator);
-        assert allItems != null;
-        Collections.sort(allItems, reversePopularityPoint);
-        popularMoviesItemAdapter.setItems(allItems);
+        if (allItems != null) {
+            Collections.sort(allItems, reversePopularityPoint);
+            popularMoviesItemAdapter.setItems(allItems);
+        }
+
+
 
 
     }
@@ -137,7 +138,10 @@ public class MainFragment extends Fragment {
                         Toast.makeText(getContext(), "search clicked", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.myList:
-                        Toast.makeText(getContext(), "cart clicked", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(getContext(), "my list", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(getActivity(), WantToWatch.class);
+                        startActivity(intent);
+
                         break;
                     case R.id.homeActivity:
                         Toast.makeText(getContext(), "home clicked", Toast.LENGTH_SHORT).show();
