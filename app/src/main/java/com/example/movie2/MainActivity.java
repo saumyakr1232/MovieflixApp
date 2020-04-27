@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: created");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        utils = new Utils(this);
 
         btnSignIn = (Button) findViewById(R.id.btnSignIn);
         btnSignUp = (Button) findViewById(R.id.btnSignUp);
@@ -30,9 +31,16 @@ public class MainActivity extends AppCompatActivity {
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: change HomeActivity to LoginActivity
-                Intent intent = new Intent(MainActivity.this, HomeActivity.class);
-                startActivity(intent);
+
+                if (utils.isSignedIn()) {
+                    Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+                    startActivity(intent);
+                } else {
+                    Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(intent);
+                }
+
+
 
 
             }

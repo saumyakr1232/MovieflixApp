@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SearchActivity"
+    android:padding="15dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/firstRelLayout">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/SearchString"
+            android:hint="@string/search_for_movies" />
+
+        <ImageView
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/ic_search2"
+            android:layout_alignParentRight="true"
+            android:id="@+id/btnSearch" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/firstRelLayout"
+        android:id="@id/secondRelLayout"
+        android:layout_marginTop="10dp">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/popularGenre"
+            android:text="Popular Genres"
+            android:layout_marginLeft="10dp"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <com.google.android.material.chip.ChipGroup
+            android:id="@+id/genreChipGroup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/popularGenre"
+            android:layout_marginTop="0dp"
+            style="@style/Widget.MaterialComponents.Chip.Filter"
+            app:singleLine="true">
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/chipAction"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Action" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/adventureChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Adventure" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/comedyChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Comedy" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/romanceChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Romance" />
+
+            <com.google.android.material.chip.Chip
+                android:id="@+id/horrorChip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Horror" />
+
+        </com.google.android.material.chip.ChipGroup>
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/secondRelLayout"
+        android:id="@+id/thirdRelLayout"
+        android:layout_marginTop="20dp">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/txtDecades"
+            android:text="Decades"
+            android:layout_marginLeft="10dp"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/forthRelLayout"
+        android:layout_below="@id/thirdRelLayout"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Keywords"
+            android:id="@+id/txtKeywords"
+            android:layout_marginLeft="10dp"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/fifthRelLayout"
+        android:layout_below="@id/forthRelLayout"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Primary Language"
+            android:id="@+id/txtLanguage"
+            android:layout_marginLeft="10dp"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/sixthRelLayout"
+        android:layout_below="@id/fifthRelLayout"
+        android:layout_marginTop="20dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Primary Country"
+            android:id="@+id/txtCountry"
+            android:layout_marginLeft="10dp"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

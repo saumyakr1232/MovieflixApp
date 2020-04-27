@@ -1,11 +1,13 @@
 package com.example.movie2;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -37,14 +39,26 @@ public class ReviewRecViewAdapter extends RecyclerView.Adapter<ReviewRecViewAdap
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         Log.d(TAG, "onBindViewHolder reviews: called");
         holder.reviewContent.setText(items.get(position).getContent());
         holder.txtReviewAuthor.setText(items.get(position).getAuthor());
         holder.parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //TODO: Navigate to WebActivity;
+                Toast.makeText(context, "review clicked", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, ReviewWebActivity.class);
+                intent.putExtra("url", items.get(position).getUrl());
+                context.startActivity(intent);
+            }
+        });
+        holder.reviewContent.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "review clicked", Toast.LENGTH_SHORT).show();
+                Intent intent = new Intent(context, ReviewWebActivity.class);
+                intent.putExtra("url", items.get(position).getUrl());
+                context.startActivity(intent);
             }
         });
 
@@ -64,7 +78,7 @@ public class ReviewRecViewAdapter extends RecyclerView.Adapter<ReviewRecViewAdap
             super(itemView);
             reviewContent = (TextView) itemView.findViewById(R.id.reviewContent);
             txtReviewAuthor = (TextView) itemView.findViewById(R.id.txtReviewAuthor);
-            parent = (CardView) itemView.findViewById(R.id.parent);
+            parent = (CardView) itemView.findViewById(R.id.parentCard);
         }
     }
 

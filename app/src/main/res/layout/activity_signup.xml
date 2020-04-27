@@ -118,7 +118,7 @@
                 android:layout_height="51dp"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="20dp"
-                android:background="@drawable/sign_up"
+                android:background="@drawable/sign_in"
                 android:elevation="4dp"
                 android:text="@string/sign_up" />
 

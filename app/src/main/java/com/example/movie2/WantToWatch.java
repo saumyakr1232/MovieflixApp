@@ -47,6 +47,7 @@ public class WantToWatch extends AppCompatActivity {
         wantToWatchList = utils.getWantToWatchMovies();
         if (wantToWatchList != null) {
             adapter.setItems(wantToWatchList);
+            adapter.notifyDataSetChanged();
         } else {
             Toast.makeText(this, "Want to Watch List is empty", Toast.LENGTH_SHORT).show();
         }
@@ -62,7 +63,8 @@ public class WantToWatch extends AppCompatActivity {
                 switch (item.getItemId()) {
                     //TODO: logic for navigation
                     case R.id.search:
-                        Toast.makeText(WantToWatch.this, "search selected", Toast.LENGTH_SHORT).show();
+                        Intent intent1 = new Intent(WantToWatch.this, SearchActivity.class);
+                        startActivity(intent1);
                         break;
                     case R.id.myList:
                         break;

@@ -20,11 +20,14 @@ public class LoginActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private Button btnLogin2;
     private EditText edtTxtemail, editTxtPass;
+    private Utils utils;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        utils = new Utils(this);
 
         mAuth = FirebaseAuth.getInstance();
         btnLogin2 = (Button) findViewById(R.id.btnSignIn2);
@@ -47,8 +50,11 @@ public class LoginActivity extends AppCompatActivity {
                             Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
                             intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
+                            utils.setSignedIn(true);
+
                         } else {
-                            Toast.makeText(LoginActivity.this, "Faild to login ", Toast.LENGTH_LONG).show();
+                            Toast.makeText(LoginActivity.this, "Failed to login ", Toast.LENGTH_LONG).show();
+                            utils.setSignedIn(false);
                         }
                     }
                 });

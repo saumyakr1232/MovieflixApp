@@ -13,6 +13,11 @@
         android:id="@+id/about"
         android:icon="@drawable/ic_info" />
     <item
+        android:title="map"
+        android:id="@+id/map"
+        android:icon="@drawable/ic_map" />
+
+    <item
         android:title="Terms"
         android:id="@+id/terms"
         android:icon="@drawable/ic_face" />

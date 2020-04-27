@@ -1,6 +1,7 @@
 package com.example.movie2;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,7 +44,10 @@ public class GenreItemAdapter extends RecyclerView.Adapter<GenreItemAdapter.View
         holder.btnGenre.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: Navigate To GenreActivity
+                Intent intent = new Intent(context, GenreActivity.class);
+                intent.putExtra("incomingGenre", items.get(position).getId());
+                intent.putExtra("GenreName", items.get(position).getName());
+                context.startActivity(intent);
 
             }
         });

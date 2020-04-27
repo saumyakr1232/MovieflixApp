@@ -44,6 +44,9 @@ public class Review implements Parcelable {
         dest.writeInt(total_results);
     }
 
+    public Review() {
+    }
+
     public Review(int id, int page, SingleReview[] results, int total_pages, int total_results) {
         this.id = id;
         this.page = page;

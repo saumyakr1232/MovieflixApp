@@ -11,7 +11,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".WantToWatch"></activity>
+        <activity android:name=".AboutWebActivity"></activity>
+        <activity android:name=".GenreItemsActivity" />
+        <activity android:name=".SearchResultsActivity" />
+        <activity android:name=".ReviewWebActivity" />
+        <activity android:name=".SearchActivity" />
+        <activity android:name=".GenreActivity" />
+        <activity android:name=".WantToWatch" />
         <activity android:name=".MovieItemActivity" />
         <activity android:name=".HomeActivity" />
         <activity android:name=".SignupActivity" />

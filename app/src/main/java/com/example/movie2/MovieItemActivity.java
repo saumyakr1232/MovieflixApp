@@ -1,6 +1,6 @@
 package com.example.movie2;
 
-import android.content.Context;
+import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -47,7 +47,6 @@ public class MovieItemActivity extends AppCompatActivity {
 
     private MovieDetails movieDetails;
     private MovieItems incomingItem;
-    private String incomingId;
 
     Utils utils;
 
@@ -62,7 +61,7 @@ public class MovieItemActivity extends AppCompatActivity {
         Intent intent = getIntent();
         try {
             incomingItem = intent.getParcelableExtra("item");
-            setViewsValues(this);
+            setViewsValues();
 
         } catch (NullPointerException e) {
             e.printStackTrace();
@@ -72,7 +71,8 @@ public class MovieItemActivity extends AppCompatActivity {
     }
 
 
-    private void setViewsValues(Context context) {
+    @SuppressLint("SetTextI18n")
+    private void setViewsValues() {
         Log.d(TAG, "setViewsValues: started");
         String url = "https://image.tmdb.org/t/p/w1280";
         String urlBack = "https://image.tmdb.org/t/p/w1066_and_h600_bestv2";
@@ -108,22 +108,25 @@ public class MovieItemActivity extends AppCompatActivity {
         Credits credits = utils.getCredits(String.valueOf(incomingItem.getId()));
         Crew[] crews = credits.getCrew();
 
-        for (Crew crew : crews
-        ) {
-            if (crew.getJob().equals("Director")) {
-                txtDetailsDirectors.setText(crew.getName());
-                break;
-            }
+        if (crews != null) {
+            for (Crew crew : crews
+            ) {
+                if (crew.getJob().equals("Director")) {
+                    txtDetailsDirectors.setText(crew.getName());
+                    break;
+                }
 
-        }
-        for (Crew crew : crews
-        ) {
-            if (crew.getJob().equals("Screenplay")) {
-                txtDetailsWriters.setText(crew.getName());
-                break;
             }
+            for (Crew crew : crews
+            ) {
+                if (crew.getJob().equals("Screenplay")) {
+                    txtDetailsWriters.setText(crew.getName());
+                    break;
+                }
 
+            }
         }
+
         btnAddToWatchList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -196,10 +199,14 @@ public class MovieItemActivity extends AppCompatActivity {
         Cast[] casts = credits.getCast();
 
         ArrayList<Cast> castItems = new ArrayList<>();
-
-        castItems.addAll(Arrays.asList(casts));
+        try {
+            castItems.addAll(Arrays.asList(casts));
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
 
         castItemAdapter.setItems(castItems);
+        castItemAdapter.notifyDataSetChanged();
 
         ArrayList<MovieItems> similarItems = utils.getSimilarItems(String.valueOf(incomingItem.getId()));
 
@@ -210,6 +217,7 @@ public class MovieItemActivity extends AppCompatActivity {
 
         if (similarItems != null) {
             similarMovieItemAdapter.setItems(similarItems);
+            similarMovieItemAdapter.notifyDataSetChanged();
         } else {
             utils.findSimilarMovies(String.valueOf(incomingItem.getId()));
         }
@@ -219,11 +227,11 @@ public class MovieItemActivity extends AppCompatActivity {
         genreRecView.setAdapter(genreItemAdapter);
 
         Genre[] genres = movieDetails.getGenres();
-        ArrayList<Genre> genresItems = new ArrayList<>();
 
-        genresItems.addAll(Arrays.asList(genres));
+        ArrayList<Genre> genresItems = new ArrayList<>(Arrays.asList(genres));
 
         genreItemAdapter.setItems(genresItems);
+        genreItemAdapter.notifyDataSetChanged();
 
         reviewRecViewAdapter = new ReviewRecViewAdapter(this);
         reviewRecView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
@@ -235,10 +243,14 @@ public class MovieItemActivity extends AppCompatActivity {
         Log.d(TAG, "setRecViews: reviews" + Arrays.toString(reviews));
 
         ArrayList<SingleReview> reviewItems = new ArrayList<>();
-
-        reviewItems.addAll(Arrays.asList(reviews));
+        try {
+            reviewItems.addAll(Arrays.asList(reviews));
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+        }
 
         reviewRecViewAdapter.setItems(reviewItems);
+        reviewRecViewAdapter.notifyDataSetChanged();
 
     }
 

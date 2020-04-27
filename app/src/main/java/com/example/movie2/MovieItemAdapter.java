@@ -42,6 +42,7 @@ public class MovieItemAdapter extends RecyclerView.Adapter<MovieItemAdapter.View
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        Log.d(TAG, "onCreateViewHolder: called");
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_rec_view_list_item, parent, false);
         ViewHolder holder = new ViewHolder(view);
         return holder;
@@ -111,9 +112,6 @@ public class MovieItemAdapter extends RecyclerView.Adapter<MovieItemAdapter.View
                         utils.addToWantToWatchMovies(item);
                         Toast.makeText(context, item.getTitle() + "is added to your Watch List", Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    utils.addToWantToWatchMovies(item);
-                    Toast.makeText(context, item.getTitle() + "is added to your Watch List", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -171,6 +169,7 @@ public class MovieItemAdapter extends RecyclerView.Adapter<MovieItemAdapter.View
             rating = (TextView) itemView.findViewById(R.id.txtRating);
             btnAdd = (ImageView) itemView.findViewById(R.id.btnAdd);
             parent = (CardView) itemView.findViewById(R.id.parent);
+
         }
     }
 

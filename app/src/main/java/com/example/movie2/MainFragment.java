@@ -48,11 +48,6 @@ public class MainFragment extends Fragment {
         initRecView();
 
 
-
-
-
-
-
         return view;
     }
 
@@ -74,15 +69,25 @@ public class MainFragment extends Fragment {
         suggestedItemsRecView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
         popularItemsRecView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
 
-        ArrayList<MovieItems> allItems = utils.getAllItems(getActivity());
-        ArrayList<MovieItems> newItems = utils.getNewItems(getActivity());
-        ArrayList<MovieItems> trendingItems = utils.getTrendingItems(getActivity());
+
+        updateRecView();
+    }
+
+    private void updateRecView() {
+        Log.d(TAG, "updateRecView: called");
+
+        ArrayList<MovieItems> allItems = utils.getAllItems();
+        ArrayList<MovieItems> newItems = utils.getNewItems();
+        ArrayList<MovieItems> trendingItems = utils.getTrendingItems();
         if (null != newItems) {
             newMoviesItemAdapter.setItems(newItems);
             suggestedMovieItemAdapter.setItems(newItems);
+            suggestedMovieItemAdapter.notifyDataSetChanged();
+            newMoviesItemAdapter.notifyDataSetChanged();
         }
         if (null != trendingItems) {
             TrendingMoviesItemAdapter.setItems(trendingItems);
+            TrendingMoviesItemAdapter.notifyDataSetChanged();
         }
 
         Comparator<MovieItems> popularityComparator = new Comparator<MovieItems>() {
@@ -95,11 +100,8 @@ public class MainFragment extends Fragment {
         if (allItems != null) {
             Collections.sort(allItems, reversePopularityPoint);
             popularMoviesItemAdapter.setItems(allItems);
+            popularMoviesItemAdapter.notifyDataSetChanged();
         }
-
-
-
-
     }
 
     private int comparePopularity(MovieItems item1, MovieItems item2) {
@@ -116,15 +118,13 @@ public class MainFragment extends Fragment {
 
     }
 
+
     @Override
     public void onResume() {
         updateRecView();
         super.onResume();
     }
 
-    private void updateRecView() {
-        //TODO: update recyclar views
-    }
 
     private void initBottomNavigation() {
         Log.d(TAG, "initBottomNavigation: created");
@@ -136,6 +136,8 @@ public class MainFragment extends Fragment {
                     //TODO: logic for navigation
                     case R.id.search:
                         Toast.makeText(getContext(), "search clicked", Toast.LENGTH_SHORT).show();
+                        Intent intent1 = new Intent(getActivity(), SearchActivity.class);
+                        startActivity(intent1);
                         break;
                     case R.id.myList:
                         Toast.makeText(getContext(), "my list", Toast.LENGTH_SHORT).show();

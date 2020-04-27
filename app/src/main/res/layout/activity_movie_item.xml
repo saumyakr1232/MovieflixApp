@@ -14,7 +14,7 @@
         android:layout_marginRight="15dp"
         android:text="@string/add_to_watchlist"
         style="@style/sign_in"
-        android:background="@drawable/sign_in_" />
+        android:background="@drawable/sign_in" />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nestedScrollView"
