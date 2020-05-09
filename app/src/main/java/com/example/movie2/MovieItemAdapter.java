@@ -4,6 +4,8 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,12 +28,25 @@ public class MovieItemAdapter extends RecyclerView.Adapter<MovieItemAdapter.View
     private Context context;
     private ArrayList<MovieItems> items = new ArrayList<>();
     private String type = "";
-    private Utils utils;
+
+    private DatabaseHelper databaseHelper;
+    private SQLiteDatabase database;
+
+    public interface DeleteMovie {
+        void onDeletingResult(MovieItems movie);
+    }
+
+    public interface AddMovie {
+        void onAddingResult(MovieItems movie);
+    }
+
+    private DeleteMovie deleteMovie;
+
+    private AddMovie addMovie;
 
 
     public MovieItemAdapter(Context context) {
         this.context = context;
-        utils = new Utils(context);
     }
 
     public MovieItemAdapter() {
@@ -45,6 +60,9 @@ public class MovieItemAdapter extends RecyclerView.Adapter<MovieItemAdapter.View
         Log.d(TAG, "onCreateViewHolder: called");
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_rec_view_list_item, parent, false);
         ViewHolder holder = new ViewHolder(view);
+
+        databaseHelper = new DatabaseHelper(context);
+        database = databaseHelper.getReadableDatabase();
         return holder;
     }
 
@@ -72,23 +90,10 @@ public class MovieItemAdapter extends RecyclerView.Adapter<MovieItemAdapter.View
         holder.btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MovieItems item = items.get(position);
-                ArrayList<MovieItems> wantToWatch = utils.getWantToWatchMovies();
-                if (wantToWatch != null) {
-                    Log.d(TAG, "onClick: wantToWatch " + wantToWatch.toString());
-
-
-                    boolean flag = false;
-
-                    for (MovieItems i : wantToWatch
-                    ) {
-                        if (i.getId() == item.getId()) {
-                            flag = true;
-                            break;
-                        }
-
-                    }
-                    if (flag) {
+                try {
+                    if (databaseHelper.insert(database, items.get(position))) {
+                        Toast.makeText(context, items.get(position).getTitle() + " is Added to your watch list successfully", Toast.LENGTH_SHORT).show();
+                    } else {
                         androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(context);
                         builder.setMessage("You Already Added this Movie to your Watch List");
 
@@ -98,23 +103,22 @@ public class MovieItemAdapter extends RecyclerView.Adapter<MovieItemAdapter.View
 
                             }
                         });
-                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                            }
-                        });
                         builder.setCancelable(false);
                         builder.create().show();
-
-
-                    } else {
-                        utils.addToWantToWatchMovies(item);
-                        Toast.makeText(context, item.getTitle() + "is added to your Watch List", Toast.LENGTH_SHORT).show();
                     }
+
+                } catch (SQLiteException e) {
+                    e.printStackTrace();
                 }
+
             }
         });
+
+        if ("want to watch".equals(type)) {
+            holder.btnAdd.setVisibility(View.GONE);
+        }
+
+
 
         holder.parent.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -134,9 +138,11 @@ public class MovieItemAdapter extends RecyclerView.Adapter<MovieItemAdapter.View
                     builder.setPositiveButton("yes", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
-                            if (utils.removeWantToWatchBooks(items.get(position))) {
-                                notifyDataSetChanged();
-                                Toast.makeText(context, item.getTitle() + " has successfully deleted", Toast.LENGTH_SHORT).show();
+                            try {
+                                deleteMovie = (DeleteMovie) context;
+                                deleteMovie.onDeletingResult(items.get(position));
+                            } catch (ClassCastException e) {
+                                e.printStackTrace();
                             }
                         }
 
@@ -152,6 +158,11 @@ public class MovieItemAdapter extends RecyclerView.Adapter<MovieItemAdapter.View
     @Override
     public int getItemCount() {
         return items.size();
+    }
+
+    public void clearItems() {
+        this.items.clear();
+        notifyDataSetChanged();
     }
 
 

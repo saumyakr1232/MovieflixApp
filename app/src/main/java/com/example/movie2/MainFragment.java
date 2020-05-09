@@ -1,6 +1,7 @@
 package com.example.movie2;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -23,15 +24,21 @@ import java.util.Collections;
 import java.util.Comparator;
 
 
-public class MainFragment extends Fragment {
+public class MainFragment extends Fragment implements MovieItemAdapter.AddMovie {
     private static final String TAG = "MainFragment";
     private BottomNavigationView bottomNavigationView;
 
     private RecyclerView newItemsRecView, popularItemsRecView, suggestedItemsRecView, trendingRecView;
 
     private MovieItemAdapter newMoviesItemAdapter, TrendingMoviesItemAdapter, suggestedMovieItemAdapter, popularMoviesItemAdapter;
+    public static final String BASE_URL = "https://api.themoviedb.org/3/";
+
 
     private Utils utils;
+
+    private DatabaseHelper databaseHelper;
+    private SQLiteDatabase database;
+
 
     @Nullable
     @Override
@@ -39,13 +46,15 @@ public class MainFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragmentt_main, container, false);
         initViews(view);
 
+        databaseHelper = new DatabaseHelper(getActivity());
+        database = databaseHelper.getReadableDatabase();
+
         initBottomNavigation();
 
-        utils = new Utils(getActivity());
-        utils.initDataBase();
 
 
         initRecView();
+
 
 
         return view;
@@ -69,8 +78,15 @@ public class MainFragment extends Fragment {
         suggestedItemsRecView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
         popularItemsRecView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
 
-
-        updateRecView();
+        MyAsyncTask task1 = new MyAsyncTask(newMoviesItemAdapter, getActivity(), 2);
+        task1.execute();
+        MyAsyncTask task2 = new MyAsyncTask(TrendingMoviesItemAdapter, getActivity(), 3);
+        task2.execute();
+        MyAsyncTask task3 = new MyAsyncTask(suggestedMovieItemAdapter, getActivity(), 2);
+        task3.execute();
+        MyAsyncTask task4 = new MyAsyncTask(popularMoviesItemAdapter, getActivity(), 3);
+        task4.execute();
+        //updateRecView();
     }
 
     private void updateRecView() {
@@ -121,7 +137,7 @@ public class MainFragment extends Fragment {
 
     @Override
     public void onResume() {
-        updateRecView();
+        //updateRecView();
         super.onResume();
     }
 
@@ -161,5 +177,17 @@ public class MainFragment extends Fragment {
         popularItemsRecView = (RecyclerView) view.findViewById(R.id.popularMovies);
         suggestedItemsRecView = (RecyclerView) view.findViewById(R.id.suggestedItems);
         trendingRecView = (RecyclerView) view.findViewById(R.id.trendingRecView);
+    }
+
+    @Override
+    public void onAddingResult(MovieItems movie) {
+        Log.d(TAG, "onAddingResult: trying to add movie : " + movie.getTitle() + " to watch list");
+        databaseHelper.insert(database, movie);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        database.close();
     }
 }

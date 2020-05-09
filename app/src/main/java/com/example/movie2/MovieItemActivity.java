@@ -3,6 +3,8 @@ package com.example.movie2;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteException;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,6 +19,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.example.movie2.Model.Cast;
 import com.example.movie2.Model.Credits;
@@ -24,8 +31,10 @@ import com.example.movie2.Model.Crew;
 import com.example.movie2.Model.Genre;
 import com.example.movie2.Model.MovieDetails;
 import com.example.movie2.Model.MovieItems;
+import com.example.movie2.Model.ResponseObject;
 import com.example.movie2.Model.Review;
 import com.example.movie2.Model.SingleReview;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -48,6 +57,9 @@ public class MovieItemActivity extends AppCompatActivity {
     private MovieDetails movieDetails;
     private MovieItems incomingItem;
 
+    private DatabaseHelper databaseHelper;
+    private SQLiteDatabase database;
+
     Utils utils;
 
 
@@ -57,6 +69,8 @@ public class MovieItemActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_item);
         initViews();
+        databaseHelper = new DatabaseHelper(this);
+        database = databaseHelper.getReadableDatabase();
 
         Intent intent = getIntent();
         try {
@@ -69,7 +83,6 @@ public class MovieItemActivity extends AppCompatActivity {
 
 
     }
-
 
     @SuppressLint("SetTextI18n")
     private void setViewsValues() {
@@ -102,52 +115,82 @@ public class MovieItemActivity extends AppCompatActivity {
 
         movieDetails = utils.getMovieDetails(String.valueOf(incomingItem.getId()));
 
+        setGenre();
+
 
         txtRuntime.setText(String.valueOf(movieDetails.getRuntime()));
 
-        Credits credits = utils.getCredits(String.valueOf(incomingItem.getId()));
-        Crew[] crews = credits.getCrew();
+        castItemAdapter = new CastItemAdapter(this);
 
-        if (crews != null) {
-            for (Crew crew : crews
-            ) {
-                if (crew.getJob().equals("Director")) {
-                    txtDetailsDirectors.setText(crew.getName());
-                    break;
+        castRecView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+        castRecView.setAdapter(castItemAdapter);
+
+        final Gson gson = new Gson();
+        String url1 = "https://api.themoviedb.org/3/movie/" + String.valueOf(incomingItem.getId()) + "/credits?api_key=12cd0a8a7f3fab830b272438df172ea8";
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url1, new com.android.volley.Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                Credits credits = new Credits();
+                try {
+                    credits = gson.fromJson(response, Credits.class);
+                    Crew[] crews = credits.getCrew();
+
+                    if (crews != null) {
+                        for (Crew crew : crews
+                        ) {
+                            if (crew.getJob().equals("Director")) {
+                                txtDetailsDirectors.setText(crew.getName());
+                                break;
+                            }
+
+                        }
+                        for (Crew crew : crews
+                        ) {
+                            if (crew.getJob().equals("Screenplay")) {
+                                txtDetailsWriters.setText(crew.getName());
+                                break;
+                            }
+
+                        }
+                    }
+
+                    Cast[] casts = credits.getCast();
+
+                    ArrayList<Cast> castItems = new ArrayList<>();
+                    try {
+                        castItems.addAll(Arrays.asList(casts));
+                    } catch (NullPointerException e) {
+                        e.printStackTrace();
+                    }
+
+                    castItemAdapter.setItems(castItems);
+
+                } catch (com.google.gson.JsonSyntaxException e) {
+                    e.printStackTrace();
                 }
 
-            }
-            for (Crew crew : crews
-            ) {
-                if (crew.getJob().equals("Screenplay")) {
-                    txtDetailsWriters.setText(crew.getName());
-                    break;
-                }
 
             }
-        }
+        }, new com.android.volley.Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+        requestQueue.start();
+
 
         btnAddToWatchList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MovieItems item = incomingItem;
-
-                ArrayList<MovieItems> wantToWatch = utils.getWantToWatchMovies();
-                if (wantToWatch != null) {
-                    Log.d(TAG, "onClick: wantToWatch " + wantToWatch.toString());
-
-
-                    boolean flag = false;
-
-                    for (MovieItems i : wantToWatch
-                    ) {
-                        if (i.getId() == item.getId()) {
-                            flag = true;
-                            break;
-                        }
-
-                    }
-                    if (flag) {
+                try {
+                    if (databaseHelper.insert(database, incomingItem)) {
+                        Toast.makeText(MovieItemActivity.this, incomingItem.getTitle() + " is Added to your watch list successfully", Toast.LENGTH_SHORT).show();
+                    } else {
                         AlertDialog.Builder builder = new AlertDialog.Builder(MovieItemActivity.this);
                         builder.setMessage("You Already Added this Movie to your Watch List");
 
@@ -157,70 +200,113 @@ public class MovieItemActivity extends AppCompatActivity {
 
                             }
                         });
-                        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                            }
-                        });
                         builder.setCancelable(false);
                         builder.create().show();
-
-
-                    } else {
-                        utils.addToWantToWatchMovies(item);
-                        Toast.makeText(MovieItemActivity.this, incomingItem.getTitle() + "is added to your Watch List", Toast.LENGTH_SHORT).show();
                     }
-                } else {
-                    utils.addToWantToWatchMovies(item);
-                    Toast.makeText(MovieItemActivity.this, incomingItem.getTitle() + "is added to your Watch List", Toast.LENGTH_SHORT).show();
+
+                } catch (SQLiteException e) {
+                    e.printStackTrace();
                 }
+
             }
         });
 
-        setRecViews();
+
+        setReviews();
+        setSimilarMovies();
 
 
     }
 
-
-    private void setRecViews() {
-        Log.d(TAG, "setRecViews: called");
-        Log.d(TAG, "setRecViews: incoming item" + String.valueOf(incomingItem.getId()));
-        Utils utils = new Utils(this);
-
-        castItemAdapter = new CastItemAdapter(this);
-
-        castRecView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
-        castRecView.setAdapter(castItemAdapter);
-
-        Credits credits = utils.getCredits(String.valueOf(incomingItem.getId()));
-
-        Cast[] casts = credits.getCast();
-
-        ArrayList<Cast> castItems = new ArrayList<>();
-        try {
-            castItems.addAll(Arrays.asList(casts));
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-
-        castItemAdapter.setItems(castItems);
-        castItemAdapter.notifyDataSetChanged();
-
-        ArrayList<MovieItems> similarItems = utils.getSimilarItems(String.valueOf(incomingItem.getId()));
-
-
+    private void setSimilarMovies() {
+        Log.d(TAG, "setSimilarMovies: called");
         similarMovieItemAdapter = new MovieItemAdapter(this);
         moreLikeThisRecView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
         moreLikeThisRecView.setAdapter(similarMovieItemAdapter);
 
-        if (similarItems != null) {
-            similarMovieItemAdapter.setItems(similarItems);
-            similarMovieItemAdapter.notifyDataSetChanged();
-        } else {
-            utils.findSimilarMovies(String.valueOf(incomingItem.getId()));
-        }
+        final Gson gson = new Gson();
+        String url = "https://api.themoviedb.org/3/movie/" + String.valueOf(incomingItem.getId()) + "/similar?api_key=12cd0a8a7f3fab830b272438df172ea8&language=en-US&page=1";
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new com.android.volley.Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                ResponseObject responseObject = gson.fromJson(response, ResponseObject.class);
+                //Log.d(TAG, "onResponse getSimilarItems : responseObject" + responseObject.toString());
+
+
+                ArrayList<MovieItems> similarMovies = responseObject.getResults();
+
+                if (similarMovies != null) {
+                    if (!similarMovies.isEmpty()) {
+                        similarMovieItemAdapter.setItems(similarMovies);
+                    } else {
+                        Toast.makeText(MovieItemActivity.this, "Unable to get similar movies ", Toast.LENGTH_SHORT).show();
+                    }
+                }
+
+
+            }
+        }, new com.android.volley.Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+        requestQueue.start();
+
+    }
+
+    private void setReviews() {
+        Log.d(TAG, "setReviews: called");
+        reviewRecViewAdapter = new ReviewRecViewAdapter(this);
+        reviewRecView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+        reviewRecView.setAdapter(reviewRecViewAdapter);
+
+        final Gson gson = new Gson();
+        String url = "https://api.themoviedb.org/3/movie/" + incomingItem.getId() + "/reviews?api_key=12cd0a8a7f3fab830b272438df172ea8&language=en-US&page=1";
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new com.android.volley.Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+
+                Log.d(TAG, "onResponse: reviews " + response);
+
+                Review review = gson.fromJson(response, Review.class);
+                SingleReview[] reviews = review.getResults();
+
+                Log.d(TAG, "setRecViews: reviews" + Arrays.toString(reviews));
+
+                ArrayList<SingleReview> reviewItems = new ArrayList<>();
+                try {
+                    reviewItems.addAll(Arrays.asList(reviews));
+                } catch (NullPointerException e) {
+                    e.printStackTrace();
+                }
+                if (!reviewItems.isEmpty()) {
+                    reviewRecViewAdapter.setItems(reviewItems);
+                } else {
+                    Toast.makeText(MovieItemActivity.this, "No Reviews found", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        }, new com.android.volley.Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(stringRequest);
+        requestQueue.start();
+
+
+    }
+
+    private void setGenre() {
+        Utils utils = new Utils(this);
 
         genreItemAdapter = new GenreItemAdapter(this);
         genreRecView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
@@ -231,26 +317,6 @@ public class MovieItemActivity extends AppCompatActivity {
         ArrayList<Genre> genresItems = new ArrayList<>(Arrays.asList(genres));
 
         genreItemAdapter.setItems(genresItems);
-        genreItemAdapter.notifyDataSetChanged();
-
-        reviewRecViewAdapter = new ReviewRecViewAdapter(this);
-        reviewRecView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
-        reviewRecView.setAdapter(reviewRecViewAdapter);
-        Review review = utils.getReviews(String.valueOf(incomingItem.getId()));
-
-        SingleReview[] reviews = review.getResults();
-
-        Log.d(TAG, "setRecViews: reviews" + Arrays.toString(reviews));
-
-        ArrayList<SingleReview> reviewItems = new ArrayList<>();
-        try {
-            reviewItems.addAll(Arrays.asList(reviews));
-        } catch (NullPointerException e) {
-            e.printStackTrace();
-        }
-
-        reviewRecViewAdapter.setItems(reviewItems);
-        reviewRecViewAdapter.notifyDataSetChanged();
 
     }
 
@@ -277,5 +343,11 @@ public class MovieItemActivity extends AppCompatActivity {
         rateThisRelLayout = (RelativeLayout) findViewById(R.id.rateThisRelLayout);
 
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        database.close();
     }
 }

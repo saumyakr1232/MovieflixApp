@@ -25,4 +25,9 @@
         android:title="Licenses"
         android:id="@+id/licenses"
         android:icon="@drawable/ic_clip" />
+
+    <item
+        android:title="Log Out"
+        android:id="@+id/logOut"
+        android:icon="@drawable/ic_log_out" />
 </menu>

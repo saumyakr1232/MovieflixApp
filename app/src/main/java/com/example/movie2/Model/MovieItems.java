@@ -23,6 +23,9 @@ public class MovieItems implements Parcelable {
     private int total_pages;
     private int total_result;
 
+    public MovieItems() {
+    }
+
     public MovieItems(String poster_path, boolean adult, String overview,
                       String release_date, int[] genre_ids, int id,
                       String original_title, String original_language,

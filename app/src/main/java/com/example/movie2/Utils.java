@@ -51,7 +51,12 @@ public class Utils {
 
         Type type = new TypeToken<ArrayList<MovieItems>>() {
         }.getType(); //creating this type just to pass in gson
-        initAllItems();
+        ArrayList<MovieItems> possibleItems = gson.fromJson(sharedPreferences.getString("allItems", ""), type);
+
+        if (null == possibleItems) {
+            initAllItems();
+
+        }
 
 
     }
@@ -68,7 +73,7 @@ public class Utils {
         getAllMovies.enqueue(new Callback<ResponseObject>() {
             @Override
             public void onResponse(Call<ResponseObject> call, Response<ResponseObject> response) {
-                //Log.d(TAG, "onResponse: onGettingAllMovies:" + response.code());
+                Log.d(TAG, "onResponse: called onGettingAllMovies:" + response.code());
                 ResponseObject responseObject = response.body();
 
                 Gson gson = new Gson();
@@ -78,7 +83,7 @@ public class Utils {
 
                 ArrayList<MovieItems> allItems = new ArrayList<>();
                 allItems = responseObject.getResults();
-                //Log.d(TAG, "onResponse: allitems" + allItems.toString());
+                Log.d(TAG, "onResponse: called allitems" + allItems.toString());
                 String finalString = gson.toJson(allItems);
                 editor.putString("allItems", finalString);
                 editor.commit();
@@ -122,7 +127,7 @@ public class Utils {
         getNewMovies.enqueue(new Callback<ResponseObject>() {
             @Override
             public void onResponse(Call<ResponseObject> call, Response<ResponseObject> response) {
-                //Log.d(TAG, "onResponse: onGettingNewMovies :" + response.code());
+                Log.d(TAG, "onResponse: onGettingNewMovies :" + response.code());
                 ResponseObject responseObject2 = response.body();
 
                 Gson gson = new Gson();
@@ -136,7 +141,6 @@ public class Utils {
                 String finalString2 = gson.toJson(allNewMovies);
                 editor.putString("allNewMovies", finalString2);
                 editor.commit();
-
             }
 
             @Override
@@ -155,28 +159,33 @@ public class Utils {
         Type type = new TypeToken<ArrayList<MovieItems>>() {
         }.getType();
         ArrayList<MovieItems> allItems = gson.fromJson(sharedPreferences.getString("allItems", null), type);
+        //Log.d(TAG, "getAllItems: allItems"+ allItems.toString());
         return allItems;
 
     }
 
+
     public ArrayList<MovieItems> getNewItems() {
-        Log.d(TAG, "getAllItems: called");
+        Log.d(TAG, "getNewItems: called");
         Gson gson = new Gson();
         SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
+        Log.d(TAG, "getNewItems: newItems ()" + sharedPreferences.getString("allNewMovies", null));
         Type type = new TypeToken<ArrayList<MovieItems>>() {
         }.getType();
         ArrayList<MovieItems> newItems = gson.fromJson(sharedPreferences.getString("allNewMovies", null), type);
+        Log.d(TAG, "getNewItems: newItems" + sharedPreferences.getString("allNewMovies", null));
         return newItems;
 
     }
 
     public ArrayList<MovieItems> getTrendingItems() {
-        Log.d(TAG, "getAllItems: called");
+        Log.d(TAG, "getTrendingItems: called");
         Gson gson = new Gson();
         SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
         Type type = new TypeToken<ArrayList<MovieItems>>() {
         }.getType();
         ArrayList<MovieItems> trendingItems = gson.fromJson(sharedPreferences.getString("allTrending", null), type);
+        //Log.d(TAG, "getTrendingItems: trendingItems" + trendingItems.toString());
         return trendingItems;
 
     }
@@ -223,7 +232,7 @@ public class Utils {
             Log.d(TAG, "getSimilarItems: similarMovies delta" + similarItems.toString());
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.remove("similarMovies" + id);
-            editor.apply();
+            editor.commit();
 
             return similarItems;
         } else {
@@ -234,7 +243,7 @@ public class Utils {
     }
 
     public void findMoviesDetails(final String id) {
-        Log.d(TAG, "getMoviesDetails: called");
+        Log.d(TAG, "findMoviesDetails: called");
 
         final Gson gson = new Gson();
         String url = "https://api.themoviedb.org/3/movie/" + id + "?api_key=12cd0a8a7f3fab830b272438df172ea8";
@@ -247,7 +256,7 @@ public class Utils {
                 } catch (JsonSyntaxException e) {
                     e.printStackTrace();
                 }
-                //Log.d(TAG, "onResponse: check " + movieDetails.toString());
+                Log.d(TAG, "onResponse: check " + movieDetails.toString());//24.673
                 SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
 
@@ -301,7 +310,7 @@ public class Utils {
                 SharedPreferences.Editor editor = sharedPreferences.edit();
 
                 editor.putString("reviewOfMovie" + id, response);
-                editor.apply();
+                editor.commit();
 
             }
         }, new com.android.volley.Response.ErrorListener() {
@@ -355,7 +364,8 @@ public class Utils {
 
                 String finalString2 = gson.toJson(credits);
                 editor.putString("creditOfMovie" + id, finalString2);
-                editor.apply();
+                Log.d(TAG, "onResponse: creadits" + credits.toString());
+                editor.commit();
 
             }
         }, new com.android.volley.Response.ErrorListener() {
@@ -368,6 +378,7 @@ public class Utils {
         RequestQueue requestQueue = Volley.newRequestQueue(context);
         requestQueue.add(stringRequest);
         requestQueue.start();
+
 
 
     }
@@ -405,7 +416,7 @@ public class Utils {
 
         String finalString = gson.toJson(wantToWatchItems);
         editor.putString("WantToWatch", finalString);
-        editor.apply();
+        editor.commit();
 
 
     }
@@ -426,7 +437,7 @@ public class Utils {
     }
 
 
-    public boolean removeWantToWatchBooks(MovieItems movieItem) {
+    public void removeWantToWatchMovies(MovieItems movieItem) {
         Log.d(TAG, "removeWantToWatchBooks: called");
         ArrayList<MovieItems> items = getWantToWatchMovies();
         ArrayList<MovieItems> improvedItems = new ArrayList<>();
@@ -442,9 +453,8 @@ public class Utils {
         Gson gson = new Gson();
         String finalString = gson.toJson(improvedItems);
         editor.putString("WantToWatch", finalString);
-        editor.apply();
+        editor.commit();
 
-        return true;
     }
 
     public void findMovieByGenre(final String id) {
@@ -492,7 +502,7 @@ public class Utils {
             return genreMovies;
         }
         editor.remove("GenreMovies" + id);
-        editor.apply();
+        editor.commit();
         return new ArrayList<>();
 
 
@@ -517,7 +527,7 @@ public class Utils {
                 ArrayList<MovieItems> similarMovies = responseObject.getResults();
                 String finalString2 = gson.toJson(similarMovies);
                 editor.putString("searchResults" + str, finalString2);
-                editor.apply();
+                editor.commit();
 
             }
         }, new com.android.volley.Response.ErrorListener() {
@@ -545,7 +555,7 @@ public class Utils {
             Log.d(TAG, "getSearchResults: called SearchResults" + searchResults.toString());
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.remove("searchResults" + str);
-            editor.apply();
+            editor.commit();
             return searchResults;
         } else {
             Log.d(TAG, "getSearchResults: SearchResults is null");
@@ -559,7 +569,7 @@ public class Utils {
         SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean("signedIn", value);
-        editor.apply();
+        editor.commit();
 
     }
 

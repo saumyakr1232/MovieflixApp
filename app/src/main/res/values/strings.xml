@@ -16,4 +16,5 @@
     <string name="drawer_open" />
     <string name="drawer_close" />
     <string name="search_for_movies">Search for Movies</string>
+    <string name="title_activity_maps">Map</string>
 </resources>

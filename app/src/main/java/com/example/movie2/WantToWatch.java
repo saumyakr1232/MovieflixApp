@@ -1,6 +1,10 @@
 package com.example.movie2;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.SQLException;
+import android.database.sqlite.SQLiteDatabase;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -13,14 +17,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.movie2.Model.MovieItems;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
-public class WantToWatch extends AppCompatActivity {
+public class WantToWatch extends AppCompatActivity implements MovieItemAdapter.DeleteMovie, MovieItemAdapter.AddMovie {
     private static final String TAG = "WantToWatch";
     private RecyclerView recyclerView;
     private MovieItemAdapter adapter;
     private BottomNavigationView bottomNavigationView;
+
+    private DatabaseHelper databaseHelper;
+    private Cursor cursor;
+    private SQLiteDatabase database;
 
     private ArrayList<MovieItems> wantToWatchList;
     private Utils utils;
@@ -31,6 +40,7 @@ public class WantToWatch extends AppCompatActivity {
         setContentView(R.layout.activity_want_to_watch);
         bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
 
+        wantToWatchList = new ArrayList<>();
         initBottomNavigation();
 
         //getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -43,14 +53,8 @@ public class WantToWatch extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         adapter.setType("want to watch");
-
-        wantToWatchList = utils.getWantToWatchMovies();
-        if (wantToWatchList != null) {
-            adapter.setItems(wantToWatchList);
-            adapter.notifyDataSetChanged();
-        } else {
-            Toast.makeText(this, "Want to Watch List is empty", Toast.LENGTH_SHORT).show();
-        }
+        DatabaseAsyncTask databaseAsyncTask = new DatabaseAsyncTask();
+        databaseAsyncTask.execute();
 
     }
 
@@ -61,7 +65,7 @@ public class WantToWatch extends AppCompatActivity {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
-                    //TODO: logic for navigation
+
                     case R.id.search:
                         Intent intent1 = new Intent(WantToWatch.this, SearchActivity.class);
                         startActivity(intent1);
@@ -78,4 +82,84 @@ public class WantToWatch extends AppCompatActivity {
         });
     }
 
+    @Override
+    public void onDeletingResult(MovieItems movie) {
+        Log.d(TAG, "onDeletingResult: trying to delete movie " + movie.toString());
+        databaseHelper.delete(database, movie);
+        DatabaseAsyncTask databaseAsyncTask = new DatabaseAsyncTask();
+        databaseAsyncTask.execute();
+        Toast.makeText(this, movie.getTitle() + " removed from your watchlist", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onAddingResult(MovieItems movie) {
+        Log.d(TAG, "onAddingResult: movie" + movie.getTitle());
+        try {
+            databaseHelper.insert(database, movie);
+            DatabaseAsyncTask databaseAsyncTask = new DatabaseAsyncTask();
+            databaseAsyncTask.execute();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private class DatabaseAsyncTask extends AsyncTask<Void, Void, String> {
+
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            adapter.clearItems();
+
+            databaseHelper = new DatabaseHelper(WantToWatch.this);
+            database = databaseHelper.getReadableDatabase();
+        }
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            Log.d(TAG, "doInBackground: called");
+
+            try {
+                cursor = database.query("movies", null, null, null, null, null
+                        , null);
+
+                if (cursor.moveToFirst()) {
+                    for (int i = 0; i < cursor.getCount(); i++) {
+                        MovieItems movieItem = new MovieItems();
+                        for (int j = 0; j < cursor.getColumnCount(); j++) {
+                            if (cursor.getColumnName(j).equals("movie")) {
+
+                                Gson gson = new Gson();
+                                movieItem = gson.fromJson(cursor.getString(j), MovieItems.class);
+
+
+                            }
+
+                        }
+                        Log.d(TAG, "doInBackground: movieItem " + movieItem.toString());
+                        wantToWatchList.add(movieItem);
+                        cursor.moveToNext();
+                    }
+                }
+
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+
+            adapter.setItems(wantToWatchList);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        cursor.close();
+        database.close();
+    }
 }
