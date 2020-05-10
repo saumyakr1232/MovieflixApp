@@ -99,6 +99,8 @@ public class MovieItemActivity extends AppCompatActivity {
                 .load(urlBack + incomingItem.getBackdrop_path())
                 .into(itemImageBack);
         //TODO: reformat the date to year only
+        String release_date = incomingItem.getRelease_date();
+        String temp[] = release_date.split("-");
         txtYOR.setText(incomingItem.getRelease_date());
         //TODO: set runtime
         txtDescription.setText(incomingItem.getOverview());

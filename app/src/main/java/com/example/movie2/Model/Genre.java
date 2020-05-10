@@ -12,6 +12,10 @@ public class Genre implements Parcelable {
         this.name = name;
     }
 
+    public Genre() {
+
+    }
+
     protected Genre(Parcel in) {
         id = in.readInt();
         name = in.readString();

@@ -97,7 +97,6 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:background="@color/colorPrimaryDark"
-        app:itemRippleColor="#fff"
+        app:itemRippleColor="@color/colorPrimaryDark"
         app:menu="@menu/button_navigation_menu" />
 </RelativeLayout>

@@ -149,7 +149,6 @@ public class MainFragment extends Fragment implements MovieItemAdapter.AddMovie 
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch (item.getItemId()) {
-                    //TODO: logic for navigation
                     case R.id.search:
                         Toast.makeText(getContext(), "search clicked", Toast.LENGTH_SHORT).show();
                         Intent intent1 = new Intent(getActivity(), SearchActivity.class);

@@ -3,18 +3,15 @@ package com.example.movie2;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.movie2.Model.Credits;
 import com.example.movie2.Model.MovieDetails;
 import com.example.movie2.Model.MovieItems;
 import com.example.movie2.Model.ResponseObject;
-import com.example.movie2.Model.Review;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
@@ -33,8 +30,6 @@ public class Utils {
     public static final String DATABASE_NAME = "fake_database";
     private Context context;
     private ArrayList<MovieItems> genreMovies;
-
-    private ArrayList<MovieItems> wantToWatchItems = new ArrayList<>();
 
     public static final String BASE_URL = "https://api.themoviedb.org/3/";
 
@@ -190,58 +185,6 @@ public class Utils {
 
     }
 
-    public void findSimilarMovies(final String id) {
-        final Gson gson = new Gson();
-        String url = "https://api.themoviedb.org/3/movie/" + id + "/similar?api_key=12cd0a8a7f3fab830b272438df172ea8&language=en-US&page=1";
-
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new com.android.volley.Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                ResponseObject responseObject = gson.fromJson(response, ResponseObject.class);
-                //Log.d(TAG, "onResponse getSimilarItems : responseObject" + responseObject.toString());
-
-                SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                ArrayList<MovieItems> similarMovies = responseObject.getResults();
-                String finalString2 = gson.toJson(similarMovies);
-                editor.putString("similarMovies" + id, finalString2);
-                editor.apply();
-
-            }
-        }, new com.android.volley.Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-        });
-
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        requestQueue.add(stringRequest);
-        requestQueue.start();
-    }
-
-    public ArrayList<MovieItems> getSimilarItems(String id) {
-        Log.d(TAG, "getSimilarItems: called");
-        findSimilarMovies(id);
-        Gson gson = new Gson();
-        SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
-        Type type = new TypeToken<ArrayList<MovieItems>>() {
-        }.getType();
-        ArrayList<MovieItems> similarItems = gson.fromJson(sharedPreferences.getString("similarMovies" + id, null), type);
-        if (null != similarItems) {
-            Log.d(TAG, "getSimilarItems: similarMovies delta" + similarItems.toString());
-            SharedPreferences.Editor editor = sharedPreferences.edit();
-            editor.remove("similarMovies" + id);
-            editor.commit();
-
-            return similarItems;
-        } else {
-            Toast.makeText(context, "No similar Movies found", Toast.LENGTH_SHORT).show();
-        }
-        return new ArrayList<>();
-
-    }
-
     public void findMoviesDetails(final String id) {
         Log.d(TAG, "findMoviesDetails: called");
 
@@ -292,218 +235,6 @@ public class Utils {
         }
         return new MovieDetails();
 
-
-
-    }
-
-    public void findReviews(final String id) {
-        Log.d(TAG, "findReviews: called");
-        final Gson gson = new Gson();
-        String url = "https://api.themoviedb.org/3/movie/" + id + "/reviews?api_key=12cd0a8a7f3fab830b272438df172ea8&language=en-US&page=1";
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new com.android.volley.Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-
-                Log.d(TAG, "onResponse: reviews " + response);
-
-                SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-
-                editor.putString("reviewOfMovie" + id, response);
-                editor.commit();
-
-            }
-        }, new com.android.volley.Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-        });
-
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        requestQueue.add(stringRequest);
-        requestQueue.start();
-
-
-    }
-
-    public Review getReviews(String id) {
-        findReviews(id);
-        Log.d(TAG, "getReviews: called");
-        findMoviesDetails(id);
-        Gson gson = new Gson();
-        SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
-        String response = sharedPreferences.getString("reviewOfMovie" + id, null);
-        Review reviews = gson.fromJson(response, Review.class);
-        if (null != reviews) {
-            Log.d(TAG, "getReviews: reviews " + id + reviews.toString());
-            return reviews;
-        }
-        return new Review();
-
-
-    }
-
-    public void findCredits(final String id) {
-        Log.d(TAG, "findReviews: called");
-        final Gson gson = new Gson();
-        String url = "https://api.themoviedb.org/3/movie/" + id + "/credits?api_key=12cd0a8a7f3fab830b272438df172ea8";
-
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new com.android.volley.Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                Credits credits = new Credits();
-                try {
-                    credits = gson.fromJson(response, Credits.class);
-                    //Log.d(TAG, "onResponse: " + credits.toString() + "\n\n\n");
-                } catch (com.google.gson.JsonSyntaxException e) {
-                    e.printStackTrace();
-                }
-                SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-
-                String finalString2 = gson.toJson(credits);
-                editor.putString("creditOfMovie" + id, finalString2);
-                Log.d(TAG, "onResponse: creadits" + credits.toString());
-                editor.commit();
-
-            }
-        }, new com.android.volley.Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-        });
-
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        requestQueue.add(stringRequest);
-        requestQueue.start();
-
-
-
-    }
-
-    public Credits getCredits(String id) {
-        Log.d(TAG, "getReviews: called");
-        findCredits(id);
-        Gson gson = new Gson();
-        SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
-
-        Credits credits = gson.fromJson(sharedPreferences.getString("creditOfMovie" + id, null), Credits.class);
-        if (credits != null) {
-            //Log.d(TAG, "getCredits: credits " + id + credits.toString() + "\n\n\n");
-            return credits;
-        }
-        return new Credits();
-
-
-    }
-
-
-    public void addToWantToWatchMovies(MovieItems movieItem) {
-        Log.d(TAG, "addToWantToWatchMovies: called");
-        wantToWatchItems.add(movieItem);
-        SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gson = new Gson();
-        String string = sharedPreferences.getString("WantToWatch", null);
-        Type type = new TypeToken<ArrayList<MovieItems>>() {
-        }.getType();
-        ArrayList<MovieItems> items = gson.fromJson(string, type);
-        if (null != items) {
-            wantToWatchItems.addAll(items);
-        }
-
-        String finalString = gson.toJson(wantToWatchItems);
-        editor.putString("WantToWatch", finalString);
-        editor.commit();
-
-
-    }
-
-    public ArrayList<MovieItems> getWantToWatchMovies() {
-        Log.d(TAG, "getWantToWatchMovies: called");
-        SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
-        Gson gson = new Gson();
-        String string = sharedPreferences.getString("WantToWatch", null);
-        Type type = new TypeToken<ArrayList<MovieItems>>() {
-        }.getType();
-        ArrayList<MovieItems> items = gson.fromJson(string, type);
-        if (items != null) {
-            Log.d(TAG, "getWantToWatchMovies: called");
-        }
-
-        return items;
-    }
-
-
-    public void removeWantToWatchMovies(MovieItems movieItem) {
-        Log.d(TAG, "removeWantToWatchBooks: called");
-        ArrayList<MovieItems> items = getWantToWatchMovies();
-        ArrayList<MovieItems> improvedItems = new ArrayList<>();
-        for (MovieItems item : items
-        ) {
-            if (item.getId() != movieItem.getId()) {
-                improvedItems.add(item);
-            }
-        }
-        Log.d(TAG, "removeWantToWatchBooks: removed " + movieItem.toString() + "\n\n\n\n");
-        SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gson = new Gson();
-        String finalString = gson.toJson(improvedItems);
-        editor.putString("WantToWatch", finalString);
-        editor.commit();
-
-    }
-
-    public void findMovieByGenre(final String id) {
-        Log.d(TAG, "findMovieByGenre: called");
-        final Gson gson = new Gson();
-        String url = "https://api.themoviedb.org/3/discover/movie?api_key=12cd0a8a7f3fab830b272438df172ea8&language=en-US&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&with_genres=" + id;
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, url, new com.android.volley.Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                ResponseObject responseObject = gson.fromJson(response, ResponseObject.class);
-                //Log.d(TAG, "onResponse: GenreMovies " + responseObject.toString());
-
-                SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                genreMovies = new ArrayList<>();
-                genreMovies = responseObject.getResults();
-                Log.d(TAG, "onResponse: genreMovies" + genreMovies.toString());
-                String finalString2 = gson.toJson(genreMovies);
-                //Log.d(TAG, "onResponse: finalString"+ finalString2);
-                editor.putString("GenreMovies" + id, finalString2);
-                editor.commit();
-            }
-        }, new com.android.volley.Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-        });
-
-        RequestQueue requestQueue = Volley.newRequestQueue(context);
-        requestQueue.add(stringRequest);
-        requestQueue.start();
-    }
-
-    public ArrayList<MovieItems> getMoviesByGenres(String id) {
-        Log.d(TAG, "getMoviesByGenres: called");
-        findMovieByGenre(id);
-        SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        Gson gson = new Gson();
-        Type type = new TypeToken<ArrayList<MovieItems>>() {
-        }.getType();
-        ArrayList<MovieItems> genreMovies = gson.fromJson(sharedPreferences.getString("GenreMovies" + id, ""), type);
-        if (null != genreMovies) {
-            return genreMovies;
-        }
-        editor.remove("GenreMovies" + id);
-        editor.commit();
-        return new ArrayList<>();
 
 
     }

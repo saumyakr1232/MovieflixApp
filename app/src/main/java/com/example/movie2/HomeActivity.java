@@ -58,7 +58,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         toolbar.setBackgroundColor(getResources().getColor(R.color.colorPrimaryDark));
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
                 R.string.drawer_open, R.string.drawer_close);
-
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         navigationView.setNavigationItemSelectedListener(this);

@@ -2,13 +2,21 @@ package com.example.movie2;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.movie2.Model.MovieItems;
+import com.example.movie2.Model.ResponseObject;
+import com.google.gson.Gson;
 
 import java.util.ArrayList;
 
@@ -54,14 +62,29 @@ public class SearchResultsActivity extends AppCompatActivity {
             searchQuery = searchQuery.replace(" ", "%20");
             String querySearchUrl = "https://api.themoviedb.org/3/search/movie?api_key=12cd0a8a7f3fab830b272438df172ea8&language=en-US&query=" +
                     searchQuery + "&page=1&include_adult=false";
-            searchResults = utils.getSearchResults(querySearchUrl);
-            if (searchResults != null) {
-                //Toast.makeText(this, searchResults.toString(), Toast.LENGTH_SHORT).show();
-                searchMoviesItemAdapter.setItems(searchResults);
-                searchMoviesItemAdapter.notifyDataSetChanged();
-                searchResults = new ArrayList<>();
+            //28%2C12
+            final Gson gson = new Gson();
+            StringRequest stringRequest = new StringRequest(Request.Method.GET, querySearchUrl, new com.android.volley.Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    ResponseObject responseObject = gson.fromJson(response, ResponseObject.class);
+                    Log.d(TAG, "onResponse called searchResults : responseObject" + responseObject.toString());
+                    ArrayList<MovieItems> searchResult = responseObject.getResults();
+                    searchMoviesItemAdapter.setItems(searchResult);
+                    searchMoviesItemAdapter.notifyDataSetChanged();
 
-            }
+
+                }
+            }, new com.android.volley.Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    error.printStackTrace();
+                }
+            });
+
+            RequestQueue requestQueue = Volley.newRequestQueue(this);
+            requestQueue.add(stringRequest);
+            requestQueue.start();
 
 
         }
@@ -72,7 +95,6 @@ public class SearchResultsActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         searchMoviesItemAdapter.setItems(new ArrayList<MovieItems>());
-        Toast.makeText(this, searchResults.toString(), Toast.LENGTH_SHORT).show();
     }
 
     private ArrayList<MovieItems> filteredSearchResults(ArrayList<Integer> ids) {
@@ -93,6 +115,7 @@ public class SearchResultsActivity extends AppCompatActivity {
         String rd_gte = "";
         String rd_lte = "";
         String keywords = "";
+        String lang = "";
         boolean haveDecade = false;
         boolean haveGenre = false;
         boolean haveKeyword = false;
@@ -269,27 +292,43 @@ public class SearchResultsActivity extends AppCompatActivity {
                 }
 
             }
-            if (haveGenre && haveDecade) {
-                baseUrl = "https://api.themoviedb.org/3/discover/movie?api_key=12cd0a8a7f3fab830b272438df172ea8" +
-                        "&language=hi&region=in" +
-                        "&sort_by=popularity.desc&include_adult=false&include_video=false&page=1" +
-                        "&release_date.gte=" + rd_gte +
-                        "&release_date.lte=" + rd_lte +
-                        "&with_genres=" + genres +
-                        "&with_keywords=180547";
-            }
-        }
-        if (haveGenre && !haveCountry && !haveDecade && !haveKeyword && !haveLang) {
-            baseUrl = "";
 
         }
+        if (haveGenre && haveDecade) {
+            baseUrl = "https://api.themoviedb.org/3/discover/movie?api_key=12cd0a8a7f3fab830b272438df172ea8" +
+                    "&language=hi&region=in" +
+                    "&sort_by=popularity.desc&include_adult=false&include_video=false&page=1" +
+                    "&release_date.gte=" + rd_gte +
+                    "&release_date.lte=" + rd_lte +
+                    "&with_genres=" + genres;
+        } else if (haveGenre && !haveCountry && haveDecade && haveKeyword && haveLang) {
+            baseUrl = "https://api.themoviedb.org/3/discover/movie?api_key=12cd0a8a7f3fab830b272438df172ea8" +
+                    "&language=" + lang + "&region=in" +
+                    "&sort_by=popularity.desc&include_adult=false&include_video=false&page=1" +
+                    "&release_date.gte=" + rd_gte +
+                    "&release_date.lte=" + rd_lte +
+                    "&with_genres=" + genres +
+                    "&with_keywords=" + keywords;
+        }
         if (haveDecade) {
+            baseUrl = "https://api.themoviedb.org/3/discover/movie?api_key=12cd0a8a7f3fab830b272438df172ea8" +
+                    "&language=hi&region=in" +
+                    "&sort_by=popularity.desc&include_adult=false&include_video=false&page=1" +
+                    "&release_date.gte=" + rd_gte +
+                    "&release_date.lte=" + rd_lte;
 
         }
         if (haveKeyword) {
+            baseUrl = "https://api.themoviedb.org/3/discover/movie?api_key=12cd0a8a7f3fab830b272438df172ea8" +
+                    "&language=hi&region=in" +
+                    "&sort_by=popularity.desc&include_adult=false&include_video=false&page=1" +
+                    "&with_keywords=" + keywords;
 
         }
         if (haveLang) {
+            baseUrl = "https://api.themoviedb.org/3/discover/movie?api_key=12cd0a8a7f3fab830b272438df172ea8" +
+                    "&sort_by=popularity.desc&include_adult=false&include_video=false&page=1" +
+                    "&with_original_language=" + lang;
 
         }
         if (haveCountry) {

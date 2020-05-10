@@ -4,362 +4,48 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SearchActivity"
-    android:padding="15dp">
+    tools:context=".SearchActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/firstRelLayout">
+        android:id="@+id/firstRelLayout"
+        android:padding="10dp">
 
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/SearchString"
-            android:hint="@string/search_for_movies" />
+            android:hint="@string/search_for_movies"
+
+            android:theme="@style/EditTextTheme" />
 
         <ImageView
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/ic_search2"
+            android:src="@drawable/ic_search3"
             android:layout_alignParentRight="true"
             android:id="@+id/btnSearch" />
 
 
     </RelativeLayout>
 
-    <RelativeLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
+        android:id="@+id/fragment_container"
         android:layout_below="@id/firstRelLayout"
-        android:id="@id/secondRelLayout"
-        android:layout_marginTop="10dp">
+        android:layout_above="@+id/bottomNavigationView"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp" />
 
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/popularGenre"
-            android:text="Popular Genres"
-            android:layout_marginLeft="10dp"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/popularGenre">
-
-            <com.google.android.material.chip.ChipGroup
-                android:id="@+id/genreChipGroup"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:singleLine="true"
-                app:singleSelection="false">
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/chipAction"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Action"
-                    style="@style/Widget.MaterialComponents.Chip.Filter" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/adventureChip"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Adventure"
-                    style="@style/Widget.MaterialComponents.Chip.Filter" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/comedyChip"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Comedy"
-                    style="@style/Widget.MaterialComponents.Chip.Filter" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/romanceChip"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Romance"
-                    style="@style/Widget.MaterialComponents.Chip.Filter" />
-
-                <com.google.android.material.chip.Chip
-                    android:id="@+id/horrorChip"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Horror"
-                    style="@style/Widget.MaterialComponents.Chip.Filter" />
-
-            </com.google.android.material.chip.ChipGroup>
-
-        </HorizontalScrollView>
-
-    </RelativeLayout>
-
-    <RelativeLayout
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottomNavigationView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/secondRelLayout"
-        android:id="@+id/thirdRelLayout"
-        android:layout_marginTop="20dp">
-
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/txtDecades"
-            android:text="Decades"
-            android:layout_marginLeft="10dp"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/txtDecades">
-
-            <com.google.android.material.chip.ChipGroup
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:id="@+id/chip_group_decades"
-                app:singleSelection="true"
-                app:singleLine="true">
-
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="2000-2010"
-                    style="@style/Widget.MaterialComponents.Chip.Filter"
-                    android:id="@+id/d2000_2010" />
-
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/d2010_2020"
-                    android:text="2010-2020"
-                    style="@style/Widget.MaterialComponents.Chip.Filter" />
-
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/d1990_2000"
-                    android:text="1990-2000"
-                    style="@style/Widget.MaterialComponents.Chip.Filter" />
-
-
-            </com.google.android.material.chip.ChipGroup>
-        </HorizontalScrollView>
-
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/forthRelLayout"
-        android:layout_below="@id/thirdRelLayout"
-        android:layout_marginTop="20dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Keywords"
-            android:id="@+id/txtKeywords"
-            android:layout_marginLeft="10dp"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/txtKeywords">
-
-            <com.google.android.material.chip.ChipGroup
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:singleLine="true"
-                android:id="@+id/chip_group_keywords"
-                app:singleSelection="false">
-
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Superhero"
-                    android:id="@+id/kSuperhero"
-                    style="@style/Widget.MaterialComponents.Chip.Filter" />
-
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Mcu"
-                    android:id="@+id/kMcu"
-                    style="@style/Widget.MaterialComponents.Chip.Filter" />
-
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Dc"
-                    android:id="@+id/kDc"
-                    style="@style/Widget.MaterialComponents.Chip.Filter" />
-
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Suicide"
-                    android:id="@+id/kSuicide"
-                    style="@style/Widget.MaterialComponents.Chip.Filter" />
-
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Musical"
-                    android:id="@+id/kMusical"
-                    style="@style/Widget.MaterialComponents.Chip.Filter" />
-
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Space"
-                    android:id="@+id/kSpace"
-                    style="@style/Widget.MaterialComponents.Chip.Filter" />
-
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Revenge"
-                    android:id="@+id/kRevenge"
-                    style="@style/Widget.MaterialComponents.Chip.Filter" />
-
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Magic"
-                    android:id="@+id/kMagic"
-                    style="@style/Widget.MaterialComponents.Chip.Filter" />
-
-            </com.google.android.material.chip.ChipGroup>
-
-
-        </HorizontalScrollView>
-
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/fifthRelLayout"
-        android:layout_below="@id/forthRelLayout"
-        android:layout_marginTop="20dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Primary Language"
-            android:id="@+id/txtLanguage"
-            android:layout_marginLeft="10dp"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/txtLanguage">
-
-            <com.google.android.material.chip.ChipGroup
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:singleSelection="true"
-                android:id="@+id/chip_group_lang"
-                app:singleLine="true">
-
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Hindi"
-                    android:id="@+id/lHindi"
-                    style="@style/Widget.MaterialComponents.Chip.Filter" />
-
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="English"
-                    android:id="@+id/lEnglish"
-                    style="@style/Widget.MaterialComponents.Chip.Filter" />
-
-            </com.google.android.material.chip.ChipGroup>
-
-        </HorizontalScrollView>
-
-
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/sixthRelLayout"
-        android:layout_below="@id/fifthRelLayout"
-        android:layout_marginTop="20dp">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Primary Country"
-            android:id="@+id/txtCountry"
-            android:layout_marginLeft="10dp"
-            android:textSize="20sp"
-            android:textStyle="bold" />
-
-        <HorizontalScrollView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/txtCountry">
-
-            <com.google.android.material.chip.ChipGroup
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:singleLine="true"
-                android:id="@+id/chip_group_country"
-                app:singleSelection="true">
-
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="India"
-                    android:id="@+id/cIndia"
-                    style="@style/Widget.MaterialComponents.Chip.Filter" />
-
-                <com.google.android.material.chip.Chip
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="United States"
-                    android:id="@+id/cUS"
-                    style="@style/Widget.MaterialComponents.Chip.Filter" />
-
-
-            </com.google.android.material.chip.ChipGroup>
-
-        </HorizontalScrollView>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true">
-
-            <Button
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:id="@+id/btnSeeResult"
-                android:text="See Results"
-                android:textSize="18sp" />
-
-
-        </RelativeLayout>
-
-
-    </RelativeLayout>
+        android:layout_alignParentBottom="true"
+        app:itemRippleColor="@color/colorPrimaryDark"
+        app:menu="@menu/button_navigation_menu" />
 
 
 </RelativeLayout>
