@@ -1,13 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="284dp"
-    android:height="58dp"
-    android:viewportWidth="284"
-    android:viewportHeight="58">
-    <group>
-        <clip-path android:pathData="M0 0H284V58H0V0Z" />
-        <path
-            android:pathData="M0 0V58H284V0"
-            android:fillColor="#C4C4C4" />
-    </group>
-</vector>
+<?xml version="1.0" encoding="utf-8"?><!--  res/drawable/rounded_edittext.xml -->
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:padding="10dp"
+    android:shape="rectangle">
+
+    <solid android:color="@color/blue_gray" />
+    <corners
+        android:bottomLeftRadius="15dp"
+        android:bottomRightRadius="15dp"
+        android:topLeftRadius="15dp"
+        android:topRightRadius="15dp" />
+</shape>

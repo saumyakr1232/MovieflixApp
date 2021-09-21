@@ -4,7 +4,9 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/learning_and_fun/AndroidStudioProjects/AndroidStudioProjects/Movie2/app/src/main/res/drawable/black_white_gradient.xml" value="0.1684027777777778" />
+        <entry key="..\:/learning_and_fun/AndroidStudioProjects/AndroidStudioProjects/Movie2/app/src/main/res/drawable/edit_txt_background.xml" value="0.16907216494845362" />
         <entry key="..\:/learning_and_fun/AndroidStudioProjects/AndroidStudioProjects/Movie2/app/src/main/res/layout-v21/activity_main.xml" value="0.15208333333333332" />
+        <entry key="..\:/learning_and_fun/AndroidStudioProjects/AndroidStudioProjects/Movie2/app/src/main/res/layout/activity_login.xml" value="0.176" />
         <entry key="..\:/learning_and_fun/AndroidStudioProjects/AndroidStudioProjects/Movie2/app/src/main/res/layout/activity_main.xml" value="0.16" />
         <entry key="..\:/learning_and_fun/AndroidStudioProjects/AndroidStudioProjects/Movie2/app/src/main/res/menu/toolbar_menu.xml" value="0.1" />
       </map>

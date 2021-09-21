@@ -9,12 +9,10 @@
     </style>
 
     <style name="sign_in">
-        <item name="android:textSize">22sp</item>
-        <item name="android:textColor">#FFFFFF</item>
-        <item name="android:shadowColor">#40000000</item>
-        <item name="android:shadowDx">0</item>
-        <item name="android:shadowDy">4</item>
-        <item name="android:shadowRadius">4</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="paddingEnd">16dp</item>
+        <item name="android:textColorHint">@android:color/secondary_text_dark</item>
+        <item name="android:textColor">@android:color/primary_text_dark</item>
     </style>
 
     <style name="sign_up">
