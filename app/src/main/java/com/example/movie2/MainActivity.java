@@ -4,13 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
-    private Button btnSignIn, btnSignUp;
     private Utils utils;
 
 
@@ -22,14 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
         utils = new Utils(this);
         utils.initDataBase();
-        btnSignIn = (Button) findViewById(R.id.btnSignIn);
-        btnSignUp = (Button) findViewById(R.id.btnSignUp);
-        onclick();
-
-    }
-
-    public void onclick() {
-        btnSignIn.setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.getStartedButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -43,19 +34,11 @@ public class MainActivity extends AppCompatActivity {
                 }
 
 
-
-
             }
         });
 
-        btnSignUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(MainActivity.this, SignupActivity.class);
-                startActivity(intent);
-            }
-        });
     }
+
 
 
 }
