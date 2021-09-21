@@ -1,7 +1,9 @@
 package com.example.movie2;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -26,7 +28,9 @@ public class LoginActivity extends AppCompatActivity {
     private TextView forgotPasswordTV;
     private TextView signUpTV;
     private Utils utils;
+    private boolean isPasswordVisible = false;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -84,6 +88,32 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //TODO: forgot password activity
                 Toast.makeText(LoginActivity.this, "TODO", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        editTxtPassword.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                final int DRAWABLE_LEFT = 0;
+                final int DRAWABLE_TOP = 1;
+                final int DRAWABLE_RIGHT = 2;
+                final int DRAWABLE_BOTTOM = 3;
+
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    if (event.getRawX() >= (editTxtPassword.getRight() - editTxtPassword.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
+                        // your action here
+                        Toast.makeText(LoginActivity.this, "" + isPasswordVisible, Toast.LENGTH_SHORT).show();
+                        if (isPasswordVisible) {
+                            editTxtPassword.setCompoundDrawablesWithIntrinsicBounds(null, null, getDrawable(R.drawable.ic_outline_remove_red_eye_24), null);
+                            isPasswordVisible = false;
+                        } else {
+                            editTxtPassword.setCompoundDrawablesWithIntrinsicBounds(null, null, getDrawable(R.drawable.ic_baseline_remove_red_eye_24), null);
+                            isPasswordVisible = true;
+                        }
+                        return true;
+                    }
+                }
+                return false;
             }
         });
 

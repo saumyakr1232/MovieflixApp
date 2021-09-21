@@ -7,5 +7,6 @@
     <color name="white">#E3F2FD</color>
     <color name="transparent">#00000000</color>
     <color name="blue_gray">#28292C</color>
+    <color name="secondary_text">#80ffffff</color>
 
 </resources>

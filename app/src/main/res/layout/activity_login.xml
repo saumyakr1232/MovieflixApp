@@ -52,7 +52,10 @@
             android:layout_marginTop="16dp"
             android:background="@drawable/edit_txt_background"
             android:hint="@string/password"
-            android:inputType="textPassword" />
+            android:drawableEnd="@drawable/ic_outline_remove_red_eye_24"
+            android:inputType="textPassword"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp" />
 
     </LinearLayout>
 
