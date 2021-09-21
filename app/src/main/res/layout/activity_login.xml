@@ -46,6 +46,7 @@
 
         <EditText
             android:id="@+id/editTextPass"
+            android:selectAllOnFocus="true"
             style="@style/sign_in"
             android:layout_width="match_parent"
             android:layout_height="72dp"

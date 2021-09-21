@@ -3,6 +3,7 @@ package com.example.movie2;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.method.PasswordTransformationMethod;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
@@ -102,13 +103,15 @@ public class LoginActivity extends AppCompatActivity {
                 if (event.getAction() == MotionEvent.ACTION_UP) {
                     if (event.getRawX() >= (editTxtPassword.getRight() - editTxtPassword.getCompoundDrawables()[DRAWABLE_RIGHT].getBounds().width())) {
                         // your action here
-                        Toast.makeText(LoginActivity.this, "" + isPasswordVisible, Toast.LENGTH_SHORT).show();
                         if (isPasswordVisible) {
                             editTxtPassword.setCompoundDrawablesWithIntrinsicBounds(null, null, getDrawable(R.drawable.ic_outline_remove_red_eye_24), null);
+                            editTxtPassword.setTransformationMethod(new PasswordTransformationMethod());
                             isPasswordVisible = false;
                         } else {
                             editTxtPassword.setCompoundDrawablesWithIntrinsicBounds(null, null, getDrawable(R.drawable.ic_baseline_remove_red_eye_24), null);
                             isPasswordVisible = true;
+                            editTxtPassword.setTransformationMethod(null);
+
                         }
                         return true;
                     }
