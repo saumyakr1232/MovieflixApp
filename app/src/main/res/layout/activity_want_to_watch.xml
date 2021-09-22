@@ -7,11 +7,11 @@
     tools:context=".WantToWatch">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/bottomNavigationView"
-        android:padding="5dp"
-        android:id="@+id/recView">
+        android:padding="5dp">
 
     </androidx.recyclerview.widget.RecyclerView>
 

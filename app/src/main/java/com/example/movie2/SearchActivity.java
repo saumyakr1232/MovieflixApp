@@ -19,7 +19,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.movie2.Model.MovieItems;
+import com.example.movie2.Model.MovieItem;
 import com.example.movie2.Model.ResponseObject;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
@@ -101,7 +101,7 @@ public class SearchActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         ResponseObject responseObject = gson.fromJson(response, ResponseObject.class);
                         Log.d(TAG, "onResponse called searchResults : responseObject" + responseObject.toString());
-                        ArrayList<MovieItems> searchResult = responseObject.getResults();
+                        ArrayList<MovieItem> searchResult = responseObject.getResults();
                         searchSecondFragment.setSearchResults(searchResult);
 
                     }

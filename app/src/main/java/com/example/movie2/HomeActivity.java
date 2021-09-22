@@ -7,7 +7,10 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
+import android.view.MenuItem;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.viewpager.widget.ViewPager;
 
@@ -56,6 +59,10 @@ public class HomeActivity extends AppCompatActivity {
         viewPager.setAdapter(adapter);
         tabLayout.setupWithViewPager(viewPager);
 
+        bottomNavigationView = findViewById(R.id.bottomNavigationView);
+
+        initBottomNavigation();
+
     }
 
     @Override
@@ -67,92 +74,33 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+    private void initBottomNavigation() {
+        Log.d(TAG, "initBottomNavigation: created");
+        bottomNavigationView.setSelectedItemId(R.id.homeActivity);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.search:
+                        Toast.makeText(HomeActivity.this, "search clicked", Toast.LENGTH_SHORT).show();
+                        Intent intent1 = new Intent(HomeActivity.this, SearchActivity.class);
+                        startActivity(intent1);
+                        break;
+                    case R.id.myList:
+                        Toast.makeText(HomeActivity.this, "my list", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(HomeActivity.this, WantToWatch.class);
+                        startActivity(intent);
 
-//    @Override
-//    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-//        switch (item.getItemId()) {
-//            case R.id.myList:
-//                Toast.makeText(this, "myList Selected", Toast.LENGTH_SHORT).show();
-//                Intent intent = new Intent(HomeActivity.this, WantToWatch.class);
-//                startActivity(intent);
-//                break;
-//            case R.id.genre:
-//                Toast.makeText(this, "genre selected", Toast.LENGTH_SHORT).show();
-//                Intent intent1 = new Intent(HomeActivity.this, GenreItemsActivity.class);
-//                startActivity(intent1);
-//                break;
-//            case R.id.about:
-//                Toast.makeText(this, "about Selected", Toast.LENGTH_SHORT).show();
-//                AlertDialog.Builder builder = new AlertDialog.Builder(this)
-//                        .setTitle("About My Library App")
-//                        .setMessage("Build and published by lol\n" +
-//                                "\n" +
-//                                "If you want to hire me or \n" +
-//                                "if you want to check my other works\n" +
-//                                "take a look at:\n" +
-//                                "lol.org")
-//                        .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//                                Intent intent = new Intent(HomeActivity.this, AboutWebActivity.class);
-//                                intent.putExtra("url", "http://www.youtube.com");
-//                                startActivity(intent);
-//                            }
-//                        })
-//                        .setNegativeButton("No", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//
-//                            }
-//                        });
-//                builder.create().show();
-//                break;
-//            case R.id.terms:
-//                Toast.makeText(this, "terms Selected", Toast.LENGTH_SHORT).show();
-//                AlertDialog.Builder builder2 = new AlertDialog.Builder(this)
-//                        .setTitle("Terms")
-//                        .setMessage("No Terms\n" +
-//                                "\n" +
-//                                "are you really interested in  \n" +
-//                                "Reading Terms \n"
-//                        )
-//                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//
-//                            }
-//                        });
-//                builder2.create().show();
-//                break;
-//            case R.id.licenses:
-//                Toast.makeText(this, "licenses Selected", Toast.LENGTH_SHORT).show();
-//                AlertDialog.Builder builder3 = new AlertDialog.Builder(this)
-//                        .setTitle("Licenses")
-//                        .setMessage("No licenses\n")
-//                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-//                            @Override
-//                            public void onClick(DialogInterface dialog, int which) {
-//
-//                            }
-//                        });
-//                builder3.create().show();
-//                break;
-//            case R.id.map:
-//                Toast.makeText(this, "map selected", Toast.LENGTH_SHORT).show();
-//                Intent intent4 = new Intent(HomeActivity.this, MapsActivity.class);
-//                startActivity(intent4);
-//                break;
-//
-//            case R.id.logOut:
-//                Intent intent3 = new Intent(HomeActivity.this, LoginActivity.class);
-//                intent3.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-//                startActivity(intent3);
-//                utils.setSignedIn(false);
-//            default:
-//                break;
-//        }
-//        return false;
-//    }
+                        break;
+                    case R.id.homeActivity:
+                        Toast.makeText(HomeActivity.this, "home clicked", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+                return true;
+            }
+        });
+    }
+
 
     private void initView() {
         Log.d(TAG, "initView: started");

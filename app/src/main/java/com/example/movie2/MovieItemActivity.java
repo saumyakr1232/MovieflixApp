@@ -25,12 +25,13 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
+import com.example.movie2.Database.DatabaseHelper;
 import com.example.movie2.Model.Cast;
 import com.example.movie2.Model.Credits;
 import com.example.movie2.Model.Crew;
 import com.example.movie2.Model.Genre;
 import com.example.movie2.Model.MovieDetails;
-import com.example.movie2.Model.MovieItems;
+import com.example.movie2.Model.MovieItem;
 import com.example.movie2.Model.ResponseObject;
 import com.example.movie2.Model.Review;
 import com.example.movie2.Model.SingleReview;
@@ -55,7 +56,7 @@ public class MovieItemActivity extends AppCompatActivity {
 
 
     private MovieDetails movieDetails;
-    private MovieItems incomingItem;
+    private MovieItem incomingItem;
 
     private DatabaseHelper databaseHelper;
     private SQLiteDatabase database;
@@ -236,7 +237,7 @@ public class MovieItemActivity extends AppCompatActivity {
                 //Log.d(TAG, "onResponse getSimilarItems : responseObject" + responseObject.toString());
 
 
-                ArrayList<MovieItems> similarMovies = responseObject.getResults();
+                ArrayList<MovieItem> similarMovies = responseObject.getResults();
 
                 if (similarMovies != null) {
                     if (!similarMovies.isEmpty()) {

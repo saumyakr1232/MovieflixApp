@@ -7,9 +7,9 @@ import java.util.ArrayList;
 
 public class ResponseObject implements Parcelable {
     private int page;
-    private ArrayList<MovieItems> results;
+    private ArrayList<MovieItem> results;
 
-    public ResponseObject(int page, ArrayList<MovieItems> results) {
+    public ResponseObject(int page, ArrayList<MovieItem> results) {
         this.page = page;
         this.results = results;
     }
@@ -22,11 +22,11 @@ public class ResponseObject implements Parcelable {
         this.page = page;
     }
 
-    public ArrayList<MovieItems> getResults() {
+    public ArrayList<MovieItem> getResults() {
         return results;
     }
 
-    public void setResults(ArrayList<MovieItems> results) {
+    public void setResults(ArrayList<MovieItem> results) {
         this.results = results;
     }
 

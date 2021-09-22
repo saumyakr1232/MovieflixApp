@@ -8,9 +8,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.SnapHelper;
 
 import com.example.movie2.MovieItemAdapter;
 import com.example.movie2.MyAsyncTask;
@@ -31,14 +29,8 @@ public class MainRecViewAdapter extends RecyclerView.Adapter<MainRecViewAdapter.
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         switch (viewType) {
-            case BACKDROP_IMAGE_ITEM:
-                View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.backdrop_image_movie_item, parent, false);
-                ViewHolder holder = new ViewHolder(view);
-                SnapHelper snapHelper = new PagerSnapHelper();
-                snapHelper.attachToRecyclerView(holder.recyclerView);
-                return holder;
             default:
-                View view2 = LayoutInflater.from(parent.getContext()).inflate(R.layout.poster_image_item, parent, false);
+                View view2 = LayoutInflater.from(parent.getContext()).inflate(R.layout.category_rec_view_item, parent, false);
                 return new ViewHolder(view2);
 
         }
@@ -46,26 +38,18 @@ public class MainRecViewAdapter extends RecyclerView.Adapter<MainRecViewAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        if (position == 0) {
-            holder.recyclerView.setAdapter(new MovieRecViewAdapter());
-            holder.recyclerView.addItemDecoration(new RecItemDecorator(32));
-
-        } else {
-            MovieItemAdapter adapter = new MovieItemAdapter(context);
-            holder.recyclerView.setAdapter(adapter);
-            holder.categoryTextView.setText("Some text " + position);
-            MyAsyncTask task1 = new MyAsyncTask(adapter, context, 1);
-            task1.execute();
-        }
+        MovieItemAdapter adapter = new MovieItemAdapter(context);
+        holder.recyclerView.setAdapter(adapter);
+        holder.recyclerView.addItemDecoration(new RecItemDecorator(0, 12, 0, 0));
+        holder.categoryTextView.setText("Some text " + position);
+        MyAsyncTask task1 = new MyAsyncTask(adapter, context, 1);
+        task1.execute();
 
 
     }
 
     @Override
     public int getItemViewType(int position) {
-        if (position == 0) {
-            return BACKDROP_IMAGE_ITEM;
-        }
         return 0;
     }
 

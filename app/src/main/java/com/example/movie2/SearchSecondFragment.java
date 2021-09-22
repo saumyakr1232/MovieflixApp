@@ -11,7 +11,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.movie2.Model.MovieItems;
+import com.example.movie2.Model.MovieItem;
 
 import java.util.ArrayList;
 
@@ -38,7 +38,7 @@ public class SearchSecondFragment extends Fragment {
         return view;
     }
 
-    public void setSearchResults(ArrayList<MovieItems> items) {
+    public void setSearchResults(ArrayList<MovieItem> items) {
 
         searchMoviesItemAdapter = new MovieItemAdapter(getActivity());
 

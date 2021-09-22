@@ -14,7 +14,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-import com.example.movie2.Model.MovieItems;
+import com.example.movie2.Model.MovieItem;
 import com.example.movie2.Model.ResponseObject;
 import com.google.gson.Gson;
 
@@ -26,7 +26,7 @@ public class SearchResultsActivity extends AppCompatActivity {
     private RecyclerView searchResultRecView;
     private Utils utils;
     private MovieItemAdapter searchMoviesItemAdapter;
-    ArrayList<MovieItems> searchResults;
+    ArrayList<MovieItem> searchResults;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +69,7 @@ public class SearchResultsActivity extends AppCompatActivity {
                 public void onResponse(String response) {
                     ResponseObject responseObject = gson.fromJson(response, ResponseObject.class);
                     Log.d(TAG, "onResponse called searchResults : responseObject" + responseObject.toString());
-                    ArrayList<MovieItems> searchResult = responseObject.getResults();
+                    ArrayList<MovieItem> searchResult = responseObject.getResults();
                     searchMoviesItemAdapter.setItems(searchResult);
                     searchMoviesItemAdapter.notifyDataSetChanged();
 
@@ -94,10 +94,10 @@ public class SearchResultsActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        searchMoviesItemAdapter.setItems(new ArrayList<MovieItems>());
+        searchMoviesItemAdapter.setItems(new ArrayList<MovieItem>());
     }
 
-    private ArrayList<MovieItems> filteredSearchResults(ArrayList<Integer> ids) {
+    private ArrayList<MovieItem> filteredSearchResults(ArrayList<Integer> ids) {
 //                 "https://api.themoviedb.org/3/discover/movie?api_key=12cd0a8a7f3fab830b272438df172ea8&language="
 //                +lang+"&region="+country+"&sort_by=popularity.desc&include_adult=false&include_video=false&page=1&release_date.gte="
 //                +rd_gte+"&release_date.lte="+rd_lte+

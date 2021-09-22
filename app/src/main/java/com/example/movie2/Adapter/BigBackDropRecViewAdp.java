@@ -9,12 +9,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.movie2.R;
 
-public class MovieRecViewAdapter extends RecyclerView.Adapter<MovieRecViewAdapter.ViewHolder> {
+public class BigBackDropRecViewAdp extends RecyclerView.Adapter<BigBackDropRecViewAdp.ViewHolder> {
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.main_rec_view_item, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.big_backdrop_rec_view_item, parent, false);
         return new ViewHolder(view);
     }
 

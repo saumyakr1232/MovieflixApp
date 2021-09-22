@@ -15,7 +15,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.movie2.Model.MovieItems;
+import com.example.movie2.Database.DatabaseHelper;
+import com.example.movie2.Model.MovieItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 
@@ -31,7 +32,7 @@ public class WantToWatch extends AppCompatActivity implements MovieItemAdapter.D
     private Cursor cursor;
     private SQLiteDatabase database;
 
-    private ArrayList<MovieItems> wantToWatchList;
+    private ArrayList<MovieItem> wantToWatchList;
     private Utils utils;
 
     @Override
@@ -83,7 +84,7 @@ public class WantToWatch extends AppCompatActivity implements MovieItemAdapter.D
     }
 
     @Override
-    public void onDeletingResult(MovieItems movie) {
+    public void onDeletingResult(MovieItem movie) {
         Log.d(TAG, "onDeletingResult: trying to delete movie " + movie.toString());
         databaseHelper.delete(database, movie);
         DatabaseAsyncTask databaseAsyncTask = new DatabaseAsyncTask();
@@ -92,7 +93,7 @@ public class WantToWatch extends AppCompatActivity implements MovieItemAdapter.D
     }
 
     @Override
-    public void onAddingResult(MovieItems movie) {
+    public void onAddingResult(MovieItem movie) {
         Log.d(TAG, "onAddingResult: movie" + movie.getTitle());
         try {
             databaseHelper.insert(database, movie);
@@ -125,12 +126,12 @@ public class WantToWatch extends AppCompatActivity implements MovieItemAdapter.D
 
                 if (cursor.moveToFirst()) {
                     for (int i = 0; i < cursor.getCount(); i++) {
-                        MovieItems movieItem = new MovieItems();
+                        MovieItem movieItem = new MovieItem();
                         for (int j = 0; j < cursor.getColumnCount(); j++) {
                             if (cursor.getColumnName(j).equals("movie")) {
 
                                 Gson gson = new Gson();
-                                movieItem = gson.fromJson(cursor.getString(j), MovieItems.class);
+                                movieItem = gson.fromJson(cursor.getString(j), MovieItem.class);
 
 
                             }

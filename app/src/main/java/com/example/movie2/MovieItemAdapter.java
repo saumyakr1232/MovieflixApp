@@ -18,48 +18,19 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.movie2.Model.MovieItems;
+import com.example.movie2.Database.DatabaseHelper;
+import com.example.movie2.Model.MovieItem;
 
 import java.util.ArrayList;
 
 public class MovieItemAdapter extends RecyclerView.Adapter<MovieItemAdapter.ViewHolder> {
     private static final String TAG = "MovieItemAdapter";
     private Context context;
-    private ArrayList<MovieItems> items = new ArrayList<>();
+    private ArrayList<MovieItem> items = new ArrayList<>();
     private String type = "";
 
     private DatabaseHelper databaseHelper;
     private SQLiteDatabase database;
-
-    public interface DeleteMovie {
-        void onDeletingResult(MovieItems movie);
-    }
-
-    public interface AddMovie {
-        void onAddingResult(MovieItems movie);
-    }
-
-    private DeleteMovie deleteMovie;
-
-    private AddMovie addMovie;
-
-
-    public MovieItemAdapter(Context context) {
-        this.context = context;
-    }
-
-
-    @NonNull
-    @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Log.d(TAG, "onCreateViewHolder: called");
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_rec_view_list_item, parent, false);
-        ViewHolder holder = new ViewHolder(view);
-
-        databaseHelper = new DatabaseHelper(context);
-        database = databaseHelper.getReadableDatabase();
-        return holder;
-    }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
@@ -118,7 +89,7 @@ public class MovieItemAdapter extends RecyclerView.Adapter<MovieItemAdapter.View
         holder.parent.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                final MovieItems item = items.get(position);
+                final MovieItem item = items.get(position);
 
                 AlertDialog.Builder builder = new AlertDialog.Builder(context)
                         .setTitle("Deleting" + item.getTitle())
@@ -148,6 +119,37 @@ public class MovieItemAdapter extends RecyclerView.Adapter<MovieItemAdapter.View
             }
         });
 
+    }
+
+    public void setItems(ArrayList<MovieItem> items) {
+        this.items = items;
+        notifyDataSetChanged();
+    }
+
+    private DeleteMovie deleteMovie;
+
+    private AddMovie addMovie;
+
+
+    public MovieItemAdapter(Context context) {
+        this.context = context;
+    }
+
+
+    @NonNull
+    @Override
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        Log.d(TAG, "onCreateViewHolder: called");
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_rec_view_list_item, parent, false);
+        ViewHolder holder = new ViewHolder(view);
+
+        databaseHelper = new DatabaseHelper(context);
+        database = databaseHelper.getReadableDatabase();
+        return holder;
+    }
+
+    public interface DeleteMovie {
+        void onDeletingResult(MovieItem movie);
     }
 
     @Override
@@ -181,9 +183,8 @@ public class MovieItemAdapter extends RecyclerView.Adapter<MovieItemAdapter.View
         }
     }
 
-    public void setItems(ArrayList<MovieItems> items) {
-        this.items = items;
-        notifyDataSetChanged();
+    public interface AddMovie {
+        void onAddingResult(MovieItem movie);
     }
 
     public void setType(String type) {

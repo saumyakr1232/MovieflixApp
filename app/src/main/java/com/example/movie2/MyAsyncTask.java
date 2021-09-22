@@ -4,11 +4,11 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import com.example.movie2.Model.MovieItems;
+import com.example.movie2.Model.MovieItem;
 
 import java.util.ArrayList;
 
-public class MyAsyncTask extends AsyncTask<Void, Integer, ArrayList<MovieItems>> {
+public class MyAsyncTask extends AsyncTask<Void, Integer, ArrayList<MovieItem>> {
     private static final String TAG = "MyAsyncTask";
     private Context context;
     private MovieItemAdapter adapter;
@@ -28,9 +28,9 @@ public class MyAsyncTask extends AsyncTask<Void, Integer, ArrayList<MovieItems>>
     }
 
     @Override
-    protected ArrayList<MovieItems> doInBackground(Void... voids) {
+    protected ArrayList<MovieItem> doInBackground(Void... voids) {
         Log.d(TAG, "doInBackground: called");
-        ArrayList<MovieItems> movieItems = new ArrayList<>();
+        ArrayList<MovieItem> movieItems = new ArrayList<>();
         switch (flag) {
             case 1:
                 movieItems = utils.getAllItems();
@@ -55,7 +55,7 @@ public class MyAsyncTask extends AsyncTask<Void, Integer, ArrayList<MovieItems>>
     }
 
     @Override
-    protected void onPostExecute(ArrayList<MovieItems> movieItems) {
+    protected void onPostExecute(ArrayList<MovieItem> movieItems) {
         super.onPostExecute(movieItems);
         adapter.setItems(movieItems);
         adapter.notifyDataSetChanged();

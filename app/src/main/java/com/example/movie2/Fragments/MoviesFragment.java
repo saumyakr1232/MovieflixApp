@@ -10,17 +10,23 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.SnapHelper;
 
+import com.example.movie2.Adapter.BigBackDropRecViewAdp;
 import com.example.movie2.Adapter.MainRecViewAdapter;
-import com.example.movie2.DatabaseHelper;
+import com.example.movie2.Adapter.RecItemDecorator;
+import com.example.movie2.Adapter.SmallBackDropRecViewAdp;
+import com.example.movie2.Database.DatabaseHelper;
 import com.example.movie2.R;
 
 public class MoviesFragment extends Fragment {
 
-    public static final String BASE_URL = "https://api.themoviedb.org/3/";
-    private RecyclerView mainRecView;
-    private MainRecViewAdapter movieRecViewAdapter;
+    private RecyclerView mainRecView, bannerRecView, watchListRecView;
+    private MainRecViewAdapter mainRecViewAdapter;
+    private BigBackDropRecViewAdp bigBackDropRecViewAdp;
+    private SmallBackDropRecViewAdp smallBackDropRecViewAdp;
     private DatabaseHelper databaseHelper;
     private SQLiteDatabase database;
 
@@ -31,15 +37,20 @@ public class MoviesFragment extends Fragment {
 
         initViews(view);
 
-        movieRecViewAdapter = new MainRecViewAdapter(getContext());
-
-//
-//        mainRecView.addItemDecoration(new RecItemDecorator(32));
-//        SnapHelper snapHelper = new PagerSnapHelper();
-//        snapHelper.attachToRecyclerView(mainRecView);
+        mainRecViewAdapter = new MainRecViewAdapter(getContext());
+        bigBackDropRecViewAdp = new BigBackDropRecViewAdp();
+        smallBackDropRecViewAdp = new SmallBackDropRecViewAdp(getContext());
 
 
-        mainRecView.setAdapter(movieRecViewAdapter);
+        bannerRecView.addItemDecoration(new RecItemDecorator(32, 32, 0, 0));
+        SnapHelper snapHelper = new PagerSnapHelper();
+        snapHelper.attachToRecyclerView(bannerRecView);
+
+        watchListRecView.addItemDecoration(new RecItemDecorator(0, 12, 0, 0));
+
+        bannerRecView.setAdapter(bigBackDropRecViewAdp);
+        mainRecView.setAdapter(mainRecViewAdapter);
+        watchListRecView.setAdapter(smallBackDropRecViewAdp);
 
 
         return view;
@@ -47,7 +58,12 @@ public class MoviesFragment extends Fragment {
 
     private void initViews(View view) {
         mainRecView = view.findViewById(R.id.mainRecView);
+        bannerRecView = view.findViewById(R.id.bannerRecView);
+        watchListRecView = view.findViewById(R.id.watchListRecView);
+        bannerRecView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         mainRecView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
+        watchListRecView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
+
 
     }
 

@@ -1,4 +1,4 @@
-package com.example.movie2;
+package com.example.movie2.Database;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -9,7 +9,7 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.example.movie2.Model.MovieItems;
+import com.example.movie2.Model.MovieItem;
 import com.google.gson.Gson;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
@@ -39,7 +39,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     }
 
 
-    public boolean insert(SQLiteDatabase db, MovieItems movieItem) throws android.database.sqlite.SQLiteConstraintException {
+    public boolean insert(SQLiteDatabase db, MovieItem movieItem) throws android.database.sqlite.SQLiteConstraintException {
         Log.d(TAG, "insert: attempting to insert movie :" + movieItem.getTitle());
 
         Gson gson = new Gson();
@@ -59,7 +59,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public void delete(SQLiteDatabase db, MovieItems movie) {
+    public void delete(SQLiteDatabase db, MovieItem movie) {
         Log.d(TAG, "delete: attemptiog to delete movie at id: " + movie.getTitle());
         Gson gson = new Gson();
         db.delete("movies", "movie=?", new String[]{gson.toJson(movie)});

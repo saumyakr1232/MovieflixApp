@@ -10,7 +10,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.movie2.Model.MovieDetails;
-import com.example.movie2.Model.MovieItems;
+import com.example.movie2.Model.MovieItem;
 import com.example.movie2.Model.ResponseObject;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
@@ -29,7 +29,7 @@ public class Utils {
     private static final String TAG = "Utils";
     public static final String DATABASE_NAME = "fake_database";
     private Context context;
-    private ArrayList<MovieItems> genreMovies;
+    private ArrayList<MovieItem> genreMovies;
 
     public static final String BASE_URL = "https://api.themoviedb.org/3/";
 
@@ -44,9 +44,9 @@ public class Utils {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         Gson gson = new Gson();
 
-        Type type = new TypeToken<ArrayList<MovieItems>>() {
+        Type type = new TypeToken<ArrayList<MovieItem>>() {
         }.getType(); //creating this type just to pass in gson
-        ArrayList<MovieItems> possibleItems = gson.fromJson(sharedPreferences.getString("allItems", ""), type);
+        ArrayList<MovieItem> possibleItems = gson.fromJson(sharedPreferences.getString("allItems", ""), type);
 
         initAllItems();
 
@@ -73,7 +73,7 @@ public class Utils {
                 SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
 
-                ArrayList<MovieItems> allItems = new ArrayList<>();
+                ArrayList<MovieItem> allItems = new ArrayList<>();
                 allItems = responseObject.getResults();
                 Log.d(TAG, "onResponse: called allitems" + allItems.toString());
                 String finalString = gson.toJson(allItems);
@@ -100,7 +100,7 @@ public class Utils {
                 SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
 
-                ArrayList<MovieItems> allTrendingItems = new ArrayList<>();
+                ArrayList<MovieItem> allTrendingItems = new ArrayList<>();
                 allTrendingItems = responseObject1.getResults();
                 //Log.d(TAG, "onResponse: allTrendingMovies" + allTrendingItems.toString());
                 String finalString1 = gson.toJson(allTrendingItems);
@@ -127,7 +127,7 @@ public class Utils {
                 SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
 
-                ArrayList<MovieItems> allNewMovies = new ArrayList<>();
+                ArrayList<MovieItem> allNewMovies = new ArrayList<>();
                 allNewMovies = responseObject2.getResults();
                 //Log.d(TAG, "onResponse: allNewMovies" + allNewMovies.toString());
                 String finalString2 = gson.toJson(allNewMovies);
@@ -144,39 +144,39 @@ public class Utils {
 
     }
 
-    public ArrayList<MovieItems> getAllItems() {
+    public ArrayList<MovieItem> getAllItems() {
         Log.d(TAG, "getAllItems: called");
         Gson gson = new Gson();
         SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
-        Type type = new TypeToken<ArrayList<MovieItems>>() {
+        Type type = new TypeToken<ArrayList<MovieItem>>() {
         }.getType();
-        ArrayList<MovieItems> allItems = gson.fromJson(sharedPreferences.getString("allItems", null), type);
+        ArrayList<MovieItem> allItems = gson.fromJson(sharedPreferences.getString("allItems", null), type);
         //Log.d(TAG, "getAllItems: allItems"+ allItems.toString());
         return allItems;
 
     }
 
 
-    public ArrayList<MovieItems> getNewItems() {
+    public ArrayList<MovieItem> getNewItems() {
         Log.d(TAG, "getNewItems: called");
         Gson gson = new Gson();
         SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
         Log.d(TAG, "getNewItems: newItems ()" + sharedPreferences.getString("allNewMovies", null));
-        Type type = new TypeToken<ArrayList<MovieItems>>() {
+        Type type = new TypeToken<ArrayList<MovieItem>>() {
         }.getType();
-        ArrayList<MovieItems> newItems = gson.fromJson(sharedPreferences.getString("allNewMovies", null), type);
+        ArrayList<MovieItem> newItems = gson.fromJson(sharedPreferences.getString("allNewMovies", null), type);
         Log.d(TAG, "getNewItems: newItems" + sharedPreferences.getString("allNewMovies", null));
         return newItems;
 
     }
 
-    public ArrayList<MovieItems> getTrendingItems() {
+    public ArrayList<MovieItem> getTrendingItems() {
         Log.d(TAG, "getTrendingItems: called");
         Gson gson = new Gson();
         SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
-        Type type = new TypeToken<ArrayList<MovieItems>>() {
+        Type type = new TypeToken<ArrayList<MovieItem>>() {
         }.getType();
-        ArrayList<MovieItems> trendingItems = gson.fromJson(sharedPreferences.getString("allTrending", null), type);
+        ArrayList<MovieItem> trendingItems = gson.fromJson(sharedPreferences.getString("allTrending", null), type);
         //Log.d(TAG, "getTrendingItems: trendingItems" + trendingItems.toString());
         return trendingItems;
 
@@ -252,7 +252,7 @@ public class Utils {
 
                 SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
-                ArrayList<MovieItems> similarMovies = responseObject.getResults();
+                ArrayList<MovieItem> similarMovies = responseObject.getResults();
                 String finalString2 = gson.toJson(similarMovies);
                 editor.putString("searchResults" + str, finalString2);
                 editor.commit();
@@ -270,15 +270,15 @@ public class Utils {
         requestQueue.start();
     }
 
-    public ArrayList<MovieItems> getSearchResults(String url) {
+    public ArrayList<MovieItem> getSearchResults(String url) {
         Log.d(TAG, "getSearchResults: called");
         searchMovies(url);
         final String str = url;
         Gson gson = new Gson();
         SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
-        Type type = new TypeToken<ArrayList<MovieItems>>() {
+        Type type = new TypeToken<ArrayList<MovieItem>>() {
         }.getType();
-        ArrayList<MovieItems> searchResults = gson.fromJson(sharedPreferences.getString("searchResults" + str, null), type);
+        ArrayList<MovieItem> searchResults = gson.fromJson(sharedPreferences.getString("searchResults" + str, null), type);
         if (searchResults != null) {
             Log.d(TAG, "getSearchResults: called SearchResults" + searchResults.toString());
             SharedPreferences.Editor editor = sharedPreferences.edit();

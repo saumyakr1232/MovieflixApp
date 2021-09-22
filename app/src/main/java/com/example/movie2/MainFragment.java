@@ -16,7 +16,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.movie2.Model.MovieItems;
+import com.example.movie2.Database.DatabaseHelper;
+import com.example.movie2.Model.MovieItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import java.util.ArrayList;
@@ -88,9 +89,9 @@ public class MainFragment extends Fragment implements MovieItemAdapter.AddMovie 
     private void updateRecView() {
         Log.d(TAG, "updateRecView: called");
 
-        ArrayList<MovieItems> allItems = utils.getAllItems();
-        ArrayList<MovieItems> newItems = utils.getNewItems();
-        ArrayList<MovieItems> trendingItems = utils.getTrendingItems();
+        ArrayList<MovieItem> allItems = utils.getAllItems();
+        ArrayList<MovieItem> newItems = utils.getNewItems();
+        ArrayList<MovieItem> trendingItems = utils.getTrendingItems();
         if (null != newItems) {
             newMoviesItemAdapter.setItems(newItems);
             suggestedMovieItemAdapter.setItems(newItems);
@@ -102,13 +103,13 @@ public class MainFragment extends Fragment implements MovieItemAdapter.AddMovie 
             TrendingMoviesItemAdapter.notifyDataSetChanged();
         }
 
-        Comparator<MovieItems> popularityComparator = new Comparator<MovieItems>() {
+        Comparator<MovieItem> popularityComparator = new Comparator<MovieItem>() {
             @Override
-            public int compare(MovieItems o1, MovieItems o2) {
+            public int compare(MovieItem o1, MovieItem o2) {
                 return comparePopularity(o1, o2);
             }
         };
-        Comparator<MovieItems> reversePopularityPoint = Collections.reverseOrder(popularityComparator);
+        Comparator<MovieItem> reversePopularityPoint = Collections.reverseOrder(popularityComparator);
         if (allItems != null) {
             Collections.sort(allItems, reversePopularityPoint);
             popularMoviesItemAdapter.setItems(allItems);
@@ -116,7 +117,7 @@ public class MainFragment extends Fragment implements MovieItemAdapter.AddMovie 
         }
     }
 
-    private int comparePopularity(MovieItems item1, MovieItems item2) {
+    private int comparePopularity(MovieItem item1, MovieItem item2) {
         Log.d(TAG, "comparePopularity: called");
         if (item1.getPopularity() > item2.getPopularity()) {
             return 1;
@@ -175,7 +176,7 @@ public class MainFragment extends Fragment implements MovieItemAdapter.AddMovie 
     }
 
     @Override
-    public void onAddingResult(MovieItems movie) {
+    public void onAddingResult(MovieItem movie) {
         Log.d(TAG, "onAddingResult: trying to add movie : " + movie.getTitle() + " to watch list");
         databaseHelper.insert(database, movie);
     }

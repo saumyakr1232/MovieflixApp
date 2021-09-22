@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 import java.util.Arrays;
 
-public class MovieItems implements Parcelable {
+public class MovieItem implements Parcelable {
     private String poster_path;
     private boolean adult;
     private String overview;
@@ -23,15 +23,27 @@ public class MovieItems implements Parcelable {
     private int total_pages;
     private int total_result;
 
-    public MovieItems() {
+    public static final Creator<MovieItem> CREATOR = new Creator<MovieItem>() {
+        @Override
+        public MovieItem createFromParcel(Parcel in) {
+            return new MovieItem(in);
+        }
+
+        @Override
+        public MovieItem[] newArray(int size) {
+            return new MovieItem[size];
+        }
+    };
+
+    public MovieItem() {
     }
 
-    public MovieItems(String poster_path, boolean adult, String overview,
-                      String release_date, int[] genre_ids, int id,
-                      String original_title, String original_language,
-                      String title, String backdrop_path, double popularity,
-                      int vote_count, boolean video, double vote_average,
-                      int total_pages, int total_result) {
+    public MovieItem(String poster_path, boolean adult, String overview,
+                     String release_date, int[] genre_ids, int id,
+                     String original_title, String original_language,
+                     String title, String backdrop_path, double popularity,
+                     int vote_count, boolean video, double vote_average,
+                     int total_pages, int total_result) {
         this.poster_path = poster_path;
         this.adult = adult;
         this.overview = overview;
@@ -50,7 +62,7 @@ public class MovieItems implements Parcelable {
         this.total_result = total_result;
     }
 
-    protected MovieItems(Parcel in) {
+    protected MovieItem(Parcel in) {
         poster_path = in.readString();
         adult = in.readByte() != 0;
         overview = in.readString();
@@ -68,18 +80,6 @@ public class MovieItems implements Parcelable {
         total_pages = in.readInt();
         total_result = in.readInt();
     }
-
-    public static final Creator<MovieItems> CREATOR = new Creator<MovieItems>() {
-        @Override
-        public MovieItems createFromParcel(Parcel in) {
-            return new MovieItems(in);
-        }
-
-        @Override
-        public MovieItems[] newArray(int size) {
-            return new MovieItems[size];
-        }
-    };
 
     public String getPoster_path() {
         return poster_path;
