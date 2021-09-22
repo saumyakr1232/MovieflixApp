@@ -3,13 +3,23 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/learning_and_fun/AndroidStudioProjects/AndroidStudioProjects/Movie2/app/src/main/res/drawable-anydpi/ic_filled_star.xml" value="0.1638888888888889" />
+        <entry key="..\:/learning_and_fun/AndroidStudioProjects/AndroidStudioProjects/Movie2/app/src/main/res/drawable-anydpi/ic_search.xml" value="0.16907216494845362" />
         <entry key="..\:/learning_and_fun/AndroidStudioProjects/AndroidStudioProjects/Movie2/app/src/main/res/drawable/black_white_gradient.xml" value="0.1684027777777778" />
+        <entry key="..\:/learning_and_fun/AndroidStudioProjects/AndroidStudioProjects/Movie2/app/src/main/res/drawable/blak_tranparent_gradient_angled.xml" value="0.1" />
         <entry key="..\:/learning_and_fun/AndroidStudioProjects/AndroidStudioProjects/Movie2/app/src/main/res/drawable/edit_txt_background.xml" value="0.16907216494845362" />
         <entry key="..\:/learning_and_fun/AndroidStudioProjects/AndroidStudioProjects/Movie2/app/src/main/res/layout-v21/activity_main.xml" value="0.15208333333333332" />
         <entry key="..\:/learning_and_fun/AndroidStudioProjects/AndroidStudioProjects/Movie2/app/src/main/res/layout/activity_home.xml" value="0.1388888888888889" />
         <entry key="..\:/learning_and_fun/AndroidStudioProjects/AndroidStudioProjects/Movie2/app/src/main/res/layout/activity_login.xml" value="0.176" />
         <entry key="..\:/learning_and_fun/AndroidStudioProjects/AndroidStudioProjects/Movie2/app/src/main/res/layout/activity_main.xml" value="0.16" />
         <entry key="..\:/learning_and_fun/AndroidStudioProjects/AndroidStudioProjects/Movie2/app/src/main/res/layout/activity_signup.xml" value="0.16006944444444443" />
+        <entry key="..\:/learning_and_fun/AndroidStudioProjects/AndroidStudioProjects/Movie2/app/src/main/res/layout/backdrop_image_movie_item.xml" value="0.15763888888888888" />
+        <entry key="..\:/learning_and_fun/AndroidStudioProjects/AndroidStudioProjects/Movie2/app/src/main/res/layout/fragment_movies.xml" value="0.15555555555555556" />
+        <entry key="..\:/learning_and_fun/AndroidStudioProjects/AndroidStudioProjects/Movie2/app/src/main/res/layout/fragmentt_main.xml" value="0.1375" />
+        <entry key="..\:/learning_and_fun/AndroidStudioProjects/AndroidStudioProjects/Movie2/app/src/main/res/layout/main_rec_view_item.xml" value="0.16" />
+        <entry key="..\:/learning_and_fun/AndroidStudioProjects/AndroidStudioProjects/Movie2/app/src/main/res/layout/movie_rec_view_list_item.xml" value="0.16" />
+        <entry key="..\:/learning_and_fun/AndroidStudioProjects/AndroidStudioProjects/Movie2/app/src/main/res/layout/poster_image_item.xml" value="0.15763888888888888" />
+        <entry key="..\:/learning_and_fun/AndroidStudioProjects/AndroidStudioProjects/Movie2/app/src/main/res/menu/button_navigation_menu.xml" value="0.1375" />
         <entry key="..\:/learning_and_fun/AndroidStudioProjects/AndroidStudioProjects/Movie2/app/src/main/res/menu/toolbar_menu.xml" value="0.1" />
       </map>
     </option>

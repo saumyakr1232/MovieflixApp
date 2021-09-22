@@ -2,13 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:title="Search"
-        android:icon="@drawable/ic_search"
-        android:id="@+id/search" />
-    <item
         android:title="Home"
         android:icon="@drawable/ic_home"
         android:id="@+id/homeActivity" />
+    <item
+        android:id="@+id/search"
+        android:icon="@drawable/ic_search"
+        android:title="Search" />
+
     <item
         android:title="My List"
         android:icon="@drawable/ic_my_list"

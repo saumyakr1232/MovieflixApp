@@ -2,94 +2,26 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/parent"
-    android:layout_width="160dp"
-    android:layout_height="310dp"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:layout_margin="5dp"
     android:padding="7dp"
-    app:cardBackgroundColor="@color/colorPrimary"
+    app:cardBackgroundColor="@color/colorPrimaryDark"
+    app:cardCornerRadius="8dp"
     app:cardElevation="2dp">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/itemImage"
+        android:layout_width="101dp"
+        android:layout_height="150dp"
+        android:src="@drawable/ic_launcher_background" />
 
-        <ImageView
-            android:id="@+id/itemImage"
-            android:layout_width="match_parent"
-            android:layout_height="220dp"
-            android:layout_marginBottom="20dp"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_launcher_background" />
-
-        <ImageView
-            android:id="@+id/btnAdd"
-            android:layout_width="60dp"
-            android:layout_height="70dp"
-            android:layout_alignParentTop="true"
-            android:layout_marginRight="10dp"
-            android:background="#74070707"
-            android:src="@drawable/ic_icon_add"
-            android:textColor="#FFF" />
-
-        <TextView
-            android:id="@+id/txtItemName"
-            style="@style/sign_in"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@+id/relLayout"
-            android:layout_alignParentLeft="true"
-            android:layout_marginLeft="10dp"
-            android:layout_marginBottom="10dp"
-            android:text="name"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-
-        <RelativeLayout
-            android:id="@+id/relLayout"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-
-            android:layout_alignParentBottom="true">
-
-            <TextView
-                android:id="@+id/txtdate"
-                style="@style/sign_in"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentBottom="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="15dp"
-                android:layout_marginBottom="10dp"
-                android:text="date"
-                android:textSize="14sp" />
-
-            <TextView
-                android:id="@+id/txtRating"
-                style="@style/sign_in"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="15dp"
-                android:layout_marginBottom="10dp"
-                android:text="rating"
-                android:textSize="14sp" />
-
-            <ImageView
-                android:id="@+id/imgStar"
-                android:layout_width="30dp"
-                android:layout_height="30dp"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="15dp"
-                android:layout_toLeftOf="@+id/txtRating"
-                android:src="@drawable/ic_filled_star" />
-
-        </RelativeLayout>
-
-
-    </RelativeLayout>
+    <ImageView
+        android:id="@+id/btnAdd"
+        android:layout_width="32dp"
+        android:layout_height="40dp"
+        android:background="#74070707"
+        android:src="@drawable/ic_icon_add"
+        android:textColor="#FFF" />
 
 </androidx.cardview.widget.CardView>

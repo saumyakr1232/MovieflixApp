@@ -48,10 +48,7 @@ public class Utils {
         }.getType(); //creating this type just to pass in gson
         ArrayList<MovieItems> possibleItems = gson.fromJson(sharedPreferences.getString("allItems", ""), type);
 
-        if (null == possibleItems) {
-            initAllItems();
-
-        }
+        initAllItems();
 
 
     }

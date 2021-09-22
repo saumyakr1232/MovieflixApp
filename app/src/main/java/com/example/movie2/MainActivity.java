@@ -20,6 +20,13 @@ public class MainActivity extends AppCompatActivity {
 
         utils = new Utils(this);
         utils.initDataBase();
+
+        if (utils.isSignedIn()) {
+            Intent intent = new Intent(MainActivity.this, HomeActivity.class);
+            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+        }
+
         findViewById(R.id.getStartedButton).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

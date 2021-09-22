@@ -51,11 +51,7 @@ public class MainFragment extends Fragment implements MovieItemAdapter.AddMovie 
 
         initBottomNavigation();
 
-
-
         initRecView();
-
-
 
         return view;
     }
