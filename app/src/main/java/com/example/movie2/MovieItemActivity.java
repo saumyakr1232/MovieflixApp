@@ -25,7 +25,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
-import com.example.movie2.Database.DatabaseHelper;
+import com.example.movie2.Database.LocalStorageDb;
 import com.example.movie2.Model.Cast;
 import com.example.movie2.Model.Credits;
 import com.example.movie2.Model.Crew;
@@ -58,7 +58,7 @@ public class MovieItemActivity extends AppCompatActivity {
     private MovieDetails movieDetails;
     private MovieItem incomingItem;
 
-    private DatabaseHelper databaseHelper;
+    private LocalStorageDb localStorageDb;
     private SQLiteDatabase database;
 
     Utils utils;
@@ -70,8 +70,8 @@ public class MovieItemActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_movie_item);
         initViews();
-        databaseHelper = new DatabaseHelper(this);
-        database = databaseHelper.getReadableDatabase();
+        localStorageDb = new LocalStorageDb(this);
+        database = localStorageDb.getReadableDatabase();
 
         Intent intent = getIntent();
         try {
@@ -191,7 +191,7 @@ public class MovieItemActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    if (databaseHelper.insert(database, incomingItem)) {
+                    if (localStorageDb.insert(database, incomingItem)) {
                         Toast.makeText(MovieItemActivity.this, incomingItem.getTitle() + " is Added to your watch list successfully", Toast.LENGTH_SHORT).show();
                     } else {
                         AlertDialog.Builder builder = new AlertDialog.Builder(MovieItemActivity.this);

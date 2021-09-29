@@ -14,10 +14,14 @@ import com.example.movie2.MovieItemAdapter;
 import com.example.movie2.MyAsyncTask;
 import com.example.movie2.R;
 
+import java.util.ArrayList;
+
 public class MainRecViewAdapter extends RecyclerView.Adapter<MainRecViewAdapter.ViewHolder> {
     private static final String TAG = "MainRecViewAdapter";
 
     private static final int BACKDROP_IMAGE_ITEM = 1;
+
+    private ArrayList<String> sections = new ArrayList<>();
 
     private Context context;
 
@@ -41,8 +45,8 @@ public class MainRecViewAdapter extends RecyclerView.Adapter<MainRecViewAdapter.
         MovieItemAdapter adapter = new MovieItemAdapter(context);
         holder.recyclerView.setAdapter(adapter);
         holder.recyclerView.addItemDecoration(new RecItemDecorator(0, 12, 0, 0));
-        holder.categoryTextView.setText("Some text " + position);
-        MyAsyncTask task1 = new MyAsyncTask(adapter, context, 1);
+        holder.categoryTextView.setText(sections.get(position));
+        MyAsyncTask task1 = new MyAsyncTask(adapter, context, sections.get(position));
         task1.execute();
 
 
@@ -55,7 +59,13 @@ public class MainRecViewAdapter extends RecyclerView.Adapter<MainRecViewAdapter.
 
     @Override
     public int getItemCount() {
-        return 5;
+        return sections.size();
+    }
+
+
+    public void setSections(ArrayList<String> sections) {
+        this.sections = sections;
+        notifyDataSetChanged();
     }
 
     protected class ViewHolder extends RecyclerView.ViewHolder {

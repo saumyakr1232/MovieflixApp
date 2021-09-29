@@ -15,7 +15,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.movie2.Database.DatabaseHelper;
+import com.example.movie2.Database.LocalStorageDb;
 import com.example.movie2.Model.MovieItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
@@ -28,7 +28,7 @@ public class WantToWatch extends AppCompatActivity implements MovieItemAdapter.D
     private MovieItemAdapter adapter;
     private BottomNavigationView bottomNavigationView;
 
-    private DatabaseHelper databaseHelper;
+    private LocalStorageDb localStorageDb;
     private Cursor cursor;
     private SQLiteDatabase database;
 
@@ -86,7 +86,7 @@ public class WantToWatch extends AppCompatActivity implements MovieItemAdapter.D
     @Override
     public void onDeletingResult(MovieItem movie) {
         Log.d(TAG, "onDeletingResult: trying to delete movie " + movie.toString());
-        databaseHelper.delete(database, movie);
+        localStorageDb.delete(database, movie);
         DatabaseAsyncTask databaseAsyncTask = new DatabaseAsyncTask();
         databaseAsyncTask.execute();
         Toast.makeText(this, movie.getTitle() + " removed from your watchlist", Toast.LENGTH_SHORT).show();
@@ -96,7 +96,7 @@ public class WantToWatch extends AppCompatActivity implements MovieItemAdapter.D
     public void onAddingResult(MovieItem movie) {
         Log.d(TAG, "onAddingResult: movie" + movie.getTitle());
         try {
-            databaseHelper.insert(database, movie);
+            localStorageDb.insert(database, movie);
             DatabaseAsyncTask databaseAsyncTask = new DatabaseAsyncTask();
             databaseAsyncTask.execute();
         } catch (SQLException e) {
@@ -112,8 +112,8 @@ public class WantToWatch extends AppCompatActivity implements MovieItemAdapter.D
             super.onPreExecute();
             adapter.clearItems();
 
-            databaseHelper = new DatabaseHelper(WantToWatch.this);
-            database = databaseHelper.getReadableDatabase();
+            localStorageDb = new LocalStorageDb(WantToWatch.this);
+            database = localStorageDb.getReadableDatabase();
         }
 
         @Override

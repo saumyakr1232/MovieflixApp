@@ -12,14 +12,26 @@ import androidx.annotation.Nullable;
 import com.example.movie2.Model.MovieItem;
 import com.google.gson.Gson;
 
-public class DatabaseHelper extends SQLiteOpenHelper {
+import java.util.ArrayList;
+
+public class LocalStorageDb extends SQLiteOpenHelper implements DatabaseObservable {
     private static final String TAG = "DatabaseHelper";
 
     private static final int DATABASE_VERSION = 1;
     private static final String DATABASE_NAME = "movieStore";
+    private static final ArrayList<DatabaseObserver> observerArrayList = new ArrayList<>();
+    private static LocalStorageDb mLocalStorageDb;
 
-    public DatabaseHelper(@Nullable Context context) {
+    public LocalStorageDb(@Nullable Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
+    }
+
+    public static synchronized LocalStorageDb getInstance(Context context) {
+        if (mLocalStorageDb == null) {
+            mLocalStorageDb = new LocalStorageDb(context.getApplicationContext());
+        }
+
+        return mLocalStorageDb;
     }
 
 
@@ -55,6 +67,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        notifyItemAdded();
         return true;
 
     }
@@ -63,5 +76,47 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         Log.d(TAG, "delete: attemptiog to delete movie at id: " + movie.getTitle());
         Gson gson = new Gson();
         db.delete("movies", "movie=?", new String[]{gson.toJson(movie)});
+        notifyItemDeleted();
+    }
+
+    @Override
+    public void registerDbObserver(DatabaseObserver databaseObserver) {
+        if (!observerArrayList.contains(databaseObserver)) {
+            observerArrayList.add(databaseObserver);
+        }
+    }
+
+    @Override
+    public void removeDbObserver(DatabaseObserver databaseObserver) {
+        observerArrayList.remove(databaseObserver);
+    }
+
+    @Override
+    public void notifyItemAdded() {
+        for (DatabaseObserver databaseObserver : observerArrayList) {
+            if (databaseObserver != null) {
+                databaseObserver.onItemAdded();
+            }
+        }
+    }
+
+    @Override
+    public void notifyItemDeleted() {
+        for (DatabaseObserver databaseObserver : observerArrayList) {
+            if (databaseObserver != null) {
+                databaseObserver.onItemDeleted();
+            }
+        }
+    }
+
+    @Override
+    public void notifyDbChanged() {
+        Log.d(TAG, "notifyDbChanged: Called");
+        for (DatabaseObserver databaseObserver : observerArrayList) {
+            if (databaseObserver != null) {
+                databaseObserver.onDatabaseChanged();
+            }
+        }
+
     }
 }

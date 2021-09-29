@@ -13,9 +13,9 @@ public class MyAsyncTask extends AsyncTask<Void, Integer, ArrayList<MovieItem>> 
     private Context context;
     private MovieItemAdapter adapter;
     private Utils utils;
-    private int flag;
+    private String flag;
 
-    public MyAsyncTask(MovieItemAdapter adapter, Context context, int flag) {
+    public MyAsyncTask(MovieItemAdapter adapter, Context context, String flag) {
         this.context = context;
         this.adapter = adapter;
         this.flag = flag;
@@ -31,14 +31,14 @@ public class MyAsyncTask extends AsyncTask<Void, Integer, ArrayList<MovieItem>> 
     protected ArrayList<MovieItem> doInBackground(Void... voids) {
         Log.d(TAG, "doInBackground: called");
         ArrayList<MovieItem> movieItems = new ArrayList<>();
-        switch (flag) {
-            case 1:
-                movieItems = utils.getAllItems();
+        switch (flag.toLowerCase()) {
+            case "top rated":
+                movieItems = utils.getTopRatedEngMovies();
                 break;
-            case 2:
-                movieItems = utils.getNewItems();
+            case "now playing":
+                movieItems = utils.getNowPlayingMovies();
                 break;
-            case 3:
+            case "trending":
                 movieItems = utils.getTrendingItems();
                 break;
             default:

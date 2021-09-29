@@ -15,11 +15,12 @@ import java.util.ArrayList;
 
 public class DatabaseAsyncTask extends AsyncTask<Void, Void, String> {
 
-    private static final int GET_WATCHLIST = 0;
-    private static final int DELETE_FROM_WATCHLIST = 1;
+    public static final int GET_WATCHLIST = 0;
+    public static final int DELETE_FROM_WATCHLIST = 1;
+    public static final int UPDATE_WATCHLIST = 0;
 
     private Context context;
-    private DatabaseHelper databaseHelper;
+    private LocalStorageDb localStorageDb;
     private Cursor cursor;
     private SQLiteDatabase database;
     private SmallBackDropRecViewAdp adapter;
@@ -37,9 +38,8 @@ public class DatabaseAsyncTask extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
-        databaseHelper = new DatabaseHelper(context);
-        database = databaseHelper.getReadableDatabase();
-        adapter.clearItems();
+        localStorageDb = new LocalStorageDb(context);
+        database = localStorageDb.getReadableDatabase();
     }
 
     @Override
@@ -58,7 +58,7 @@ public class DatabaseAsyncTask extends AsyncTask<Void, Void, String> {
                                 movieItem = gson.fromJson(cursor.getString(j), MovieItem.class);
                             }
                         }
-                        wantToWatchList.add(movieItem);
+                        wantToWatchList.add(0, movieItem);
                         cursor.moveToNext();
                     }
                 }
@@ -67,7 +67,9 @@ public class DatabaseAsyncTask extends AsyncTask<Void, Void, String> {
             }
 
         } else if (task == DELETE_FROM_WATCHLIST) {
-            databaseHelper.delete(database, movie);
+            localStorageDb.delete(database, movie);
+        } else if (task == UPDATE_WATCHLIST) {
+
         }
 
         return null;
@@ -78,6 +80,6 @@ public class DatabaseAsyncTask extends AsyncTask<Void, Void, String> {
     @Override
     protected void onPostExecute(String s) {
         super.onPostExecute(s);
-        adapter.setItems(wantToWatchList);
+        adapter.updateItems(wantToWatchList);
     }
 }

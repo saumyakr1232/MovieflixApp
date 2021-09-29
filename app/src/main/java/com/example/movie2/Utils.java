@@ -61,6 +61,8 @@ public class Utils {
                 .build();
 
         RetrofitClient retrofitClient = retrofit.create(RetrofitClient.class);
+
+
         Call<ResponseObject> getAllMovies = retrofitClient.getAllMovies();
         getAllMovies.enqueue(new Callback<ResponseObject>() {
             @Override
@@ -88,6 +90,8 @@ public class Utils {
                 Log.d(TAG, "onFailure: onGettingAllMovies : t" + t.getMessage());
             }
         });
+
+
         Call<ResponseObject> getTrendingMovies = retrofitClient.getTrendingMovies();
         getTrendingMovies.enqueue(new Callback<ResponseObject>() {
             @Override
@@ -115,6 +119,8 @@ public class Utils {
                 Log.d(TAG, "onFailure: onGettingTrendingMovies : t" + t.getMessage());
             }
         });
+
+
         Call<ResponseObject> getNewMovies = retrofitClient.getNewMovies();
         getNewMovies.enqueue(new Callback<ResponseObject>() {
             @Override
@@ -141,6 +147,152 @@ public class Utils {
             }
         });
 
+        Call<ResponseObject> getNowPlayingMovies = retrofitClient.getNowPlayingMovies();
+        getNowPlayingMovies.enqueue(new Callback<ResponseObject>() {
+            @Override
+            public void onResponse(Call<ResponseObject> call, Response<ResponseObject> response) {
+                Log.d(TAG, "onResponse: onGettingNowPlaying :" + response.code());
+                ResponseObject responseObject2 = response.body();
+
+                Gson gson = new Gson();
+                if (response.code() == 200) {
+
+
+                    SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                    ArrayList<MovieItem> nowPlayingMovies = new ArrayList<>();
+                    nowPlayingMovies = responseObject2.getResults();
+                    //Log.d(TAG, "onResponse: allNewMovies" + allNewMovies.toString());
+                    String finalString2 = gson.toJson(nowPlayingMovies);
+                    editor.putString("nowPlayingMovies", finalString2);
+                    editor.commit();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseObject> call, Throwable t) {
+                Log.d(TAG, "onFailure: onGettingNewMovies : t" + t.getMessage());
+            }
+        });
+
+
+        Call<ResponseObject> getTopRatedEnglishMovies = retrofitClient.getTopRatedEnglishMovies();
+        getTopRatedEnglishMovies.enqueue(new Callback<ResponseObject>() {
+            @Override
+            public void onResponse(Call<ResponseObject> call, Response<ResponseObject> response) {
+                Log.d(TAG, "onResponse: OnGettingTopratedEngMovies :" + response.code());
+                ResponseObject responseObject2 = response.body();
+
+                if (response.code() == 200) {
+
+                    Gson gson = new Gson();
+
+                    SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                    ArrayList<MovieItem> topRatedEngMovies = new ArrayList<>();
+                    topRatedEngMovies = responseObject2.getResults();
+                    //Log.d(TAG, "onResponse: allNewMovies" + allNewMovies.toString());
+                    String finalString2 = gson.toJson(topRatedEngMovies);
+                    editor.putString("topRatedEngMovies", finalString2);
+                    editor.commit();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseObject> call, Throwable t) {
+                Log.d(TAG, "onFailure: onGettingNewMovies : t" + t.getMessage());
+            }
+        });
+
+
+        Call<ResponseObject> getTopRatedHindiMovie = retrofitClient.getTopRatedHindiMovies();
+        getTopRatedHindiMovie.enqueue(new Callback<ResponseObject>() {
+            @Override
+            public void onResponse(Call<ResponseObject> call, Response<ResponseObject> response) {
+                Log.d(TAG, "onResponse: onGettingTopRatedHindi :" + response.code());
+                ResponseObject responseObject2 = response.body();
+
+                if (response.code() == 200) {
+                    Gson gson = new Gson();
+
+                    SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                    ArrayList<MovieItem> allNewMovies = new ArrayList<>();
+                    allNewMovies = responseObject2.getResults();
+                    //Log.d(TAG, "onResponse: allNewMovies" + allNewMovies.toString());
+                    String finalString2 = gson.toJson(allNewMovies);
+                    editor.putString("topRatedHindiMovies", finalString2);
+                    editor.commit();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseObject> call, Throwable t) {
+                Log.d(TAG, "onFailure: onGettingNewMovies : t" + t.getMessage());
+            }
+        });
+
+        Call<ResponseObject> getUpcomingHindiMovies = retrofitClient.getUpcomingHindiMovies();
+        getUpcomingHindiMovies.enqueue(new Callback<ResponseObject>() {
+            @Override
+            public void onResponse(Call<ResponseObject> call, Response<ResponseObject> response) {
+                Log.d(TAG, "onResponse: onGettingNewMovies :" + response.code());
+                ResponseObject responseObject2 = response.body();
+
+                if (response.code() == 200) {
+                    Gson gson = new Gson();
+
+                    SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                    ArrayList<MovieItem> allNewMovies = new ArrayList<>();
+                    allNewMovies = responseObject2.getResults();
+                    //Log.d(TAG, "onResponse: allNewMovies" + allNewMovies.toString());
+                    String finalString2 = gson.toJson(allNewMovies);
+                    editor.putString("upcomingHindiMovies", finalString2);
+                    editor.commit();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseObject> call, Throwable t) {
+                Log.d(TAG, "onFailure: onGettingNewMovies : t" + t.getMessage());
+            }
+        });
+
+        Call<ResponseObject> getUpcomingEngMovies = retrofitClient.getUpcomingEngMovies();
+        getUpcomingEngMovies.enqueue(new Callback<ResponseObject>() {
+            @Override
+            public void onResponse(Call<ResponseObject> call, Response<ResponseObject> response) {
+                Log.d(TAG, "onResponse: onGettingNewMovies :" + response.code());
+                ResponseObject responseObject2 = response.body();
+
+                Gson gson = new Gson();
+                if (response.code() == 200) {
+
+
+                    SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+
+                    ArrayList<MovieItem> allNewMovies = new ArrayList<>();
+                    allNewMovies = responseObject2.getResults();
+                    //Log.d(TAG, "onResponse: allNewMovies" + allNewMovies.toString());
+                    String finalString2 = gson.toJson(allNewMovies);
+                    editor.putString("upcomingEngMovies", finalString2);
+                    editor.commit();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseObject> call, Throwable t) {
+                Log.d(TAG, "onFailure: onGettingNewMovies : t" + t.getMessage());
+            }
+
+        });
+
 
     }
 
@@ -155,7 +307,6 @@ public class Utils {
         return allItems;
 
     }
-
 
     public ArrayList<MovieItem> getNewItems() {
         Log.d(TAG, "getNewItems: called");
@@ -181,6 +332,62 @@ public class Utils {
         return trendingItems;
 
     }
+
+    public ArrayList<MovieItem> getTopRatedEngMovies() {
+        Log.d(TAG, "getTrendingItems: called");
+        Gson gson = new Gson();
+        SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
+        Type type = new TypeToken<ArrayList<MovieItem>>() {
+        }.getType();
+        //Log.d(TAG, "getTrendingItems: trendingItems" + trendingItems.toString());
+        return gson.fromJson(sharedPreferences.getString("topRatedEngMovies", null), type);
+
+    }
+
+    public ArrayList<MovieItem> getUpcomingEngMovies() {
+        Log.d(TAG, "getTrendingItems: called");
+        Gson gson = new Gson();
+        SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
+        Type type = new TypeToken<ArrayList<MovieItem>>() {
+        }.getType();
+        //Log.d(TAG, "getTrendingItems: trendingItems" + trendingItems.toString());
+        return gson.fromJson(sharedPreferences.getString("upcomingEngMovies", null), type);
+
+    }
+
+    public ArrayList<MovieItem> getUpcomingHindiMovies() {
+        Log.d(TAG, "getTrendingItems: called");
+        Gson gson = new Gson();
+        SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
+        Type type = new TypeToken<ArrayList<MovieItem>>() {
+        }.getType();
+        //Log.d(TAG, "getTrendingItems: trendingItems" + trendingItems.toString());
+        return gson.fromJson(sharedPreferences.getString("upcomingHindiMovies", null), type);
+
+    }
+
+    public ArrayList<MovieItem> getTopRatedHindiMovie() {
+        Log.d(TAG, "getTrendingItems: called");
+        Gson gson = new Gson();
+        SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
+        Type type = new TypeToken<ArrayList<MovieItem>>() {
+        }.getType();
+        //Log.d(TAG, "getTrendingItems: trendingItems" + trendingItems.toString());
+        return gson.fromJson(sharedPreferences.getString("topRatedHindiMovies", null), type);
+
+    }
+
+    public ArrayList<MovieItem> getNowPlayingMovies() {
+        Log.d(TAG, "getTrendingItems: called");
+        Gson gson = new Gson();
+        SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
+        Type type = new TypeToken<ArrayList<MovieItem>>() {
+        }.getType();
+        //Log.d(TAG, "getTrendingItems: trendingItems" + trendingItems.toString());
+        return gson.fromJson(sharedPreferences.getString("nowPlayingMovies", null), type);
+
+    }
+
 
     public void findMoviesDetails(final String id) {
         Log.d(TAG, "findMoviesDetails: called");

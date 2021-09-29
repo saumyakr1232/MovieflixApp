@@ -18,7 +18,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.movie2.Database.DatabaseHelper;
+import com.example.movie2.Database.LocalStorageDb;
 import com.example.movie2.Model.MovieItem;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class MovieItemAdapter extends RecyclerView.Adapter<MovieItemAdapter.View
     private ArrayList<MovieItem> items = new ArrayList<>();
     private String type = "";
 
-    private DatabaseHelper databaseHelper;
+    private LocalStorageDb localStorageDb;
     private SQLiteDatabase database;
 
     @Override
@@ -57,7 +57,7 @@ public class MovieItemAdapter extends RecyclerView.Adapter<MovieItemAdapter.View
             @Override
             public void onClick(View v) {
                 try {
-                    if (databaseHelper.insert(database, items.get(position))) {
+                    if (localStorageDb.insert(database, items.get(position))) {
                         Toast.makeText(context, items.get(position).getTitle() + " is Added to your watch list successfully", Toast.LENGTH_SHORT).show();
                     } else {
                         androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(context);
@@ -143,8 +143,8 @@ public class MovieItemAdapter extends RecyclerView.Adapter<MovieItemAdapter.View
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.movie_rec_view_list_item, parent, false);
         ViewHolder holder = new ViewHolder(view);
 
-        databaseHelper = new DatabaseHelper(context);
-        database = databaseHelper.getReadableDatabase();
+        localStorageDb = new LocalStorageDb(context);
+        database = localStorageDb.getReadableDatabase();
         return holder;
     }
 

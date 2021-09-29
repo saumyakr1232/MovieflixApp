@@ -18,17 +18,22 @@ import com.example.movie2.Adapter.BigBackDropRecViewAdp;
 import com.example.movie2.Adapter.MainRecViewAdapter;
 import com.example.movie2.Adapter.RecItemDecorator;
 import com.example.movie2.Adapter.SmallBackDropRecViewAdp;
-import com.example.movie2.Database.DatabaseHelper;
+import com.example.movie2.Database.DatabaseAsyncTask;
+import com.example.movie2.Database.DatabaseObserver;
+import com.example.movie2.Database.LocalStorageDb;
 import com.example.movie2.R;
 
-public class MoviesFragment extends Fragment {
+import java.util.ArrayList;
+
+public class MoviesFragment extends Fragment implements DatabaseObserver {
 
     private RecyclerView mainRecView, bannerRecView, watchListRecView;
     private MainRecViewAdapter mainRecViewAdapter;
     private BigBackDropRecViewAdp bigBackDropRecViewAdp;
     private SmallBackDropRecViewAdp smallBackDropRecViewAdp;
-    private DatabaseHelper databaseHelper;
+    private LocalStorageDb localStorageDb;
     private SQLiteDatabase database;
+    private ArrayList<String> sections = new ArrayList<>();
 
     @Nullable
     @Override
@@ -36,6 +41,8 @@ public class MoviesFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_movies, container, false);
 
         initViews(view);
+
+        localStorageDb = LocalStorageDb.getInstance(getContext());
 
         mainRecViewAdapter = new MainRecViewAdapter(getContext());
         bigBackDropRecViewAdp = new BigBackDropRecViewAdp();
@@ -53,6 +60,24 @@ public class MoviesFragment extends Fragment {
         watchListRecView.setAdapter(smallBackDropRecViewAdp);
 
 
+        sections.add("Trending");
+        sections.add("Now Playing");
+        sections.add("Top Rated");
+        mainRecViewAdapter.setSections(sections);
+
+        DatabaseAsyncTask databaseAsyncTask = new DatabaseAsyncTask(getContext(), smallBackDropRecViewAdp, DatabaseAsyncTask.GET_WATCHLIST);
+        databaseAsyncTask.execute();
+
+
+        smallBackDropRecViewAdp.registerAdapterDataObserver(new RecyclerView.AdapterDataObserver() {
+            @Override
+            public void onItemRangeInserted(int positionStart, int itemCount) {
+                super.onItemRangeInserted(positionStart, itemCount);
+                watchListRecView.smoothScrollToPosition(0);
+            }
+        });
+
+
         return view;
     }
 
@@ -67,4 +92,31 @@ public class MoviesFragment extends Fragment {
 
     }
 
+    @Override
+    public void onItemAdded() {
+        DatabaseAsyncTask databaseAsyncTask = new DatabaseAsyncTask(getContext(), smallBackDropRecViewAdp, DatabaseAsyncTask.GET_WATCHLIST);
+        databaseAsyncTask.execute();
+    }
+
+    @Override
+    public void onItemDeleted() {
+
+    }
+
+    @Override
+    public void onDatabaseChanged() {
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        localStorageDb.removeDbObserver(this);
+    }
+
+    @Override
+    public void onResume() {
+        localStorageDb.registerDbObserver(this);
+        super.onResume();
+    }
 }

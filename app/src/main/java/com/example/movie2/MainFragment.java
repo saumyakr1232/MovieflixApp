@@ -16,7 +16,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.movie2.Database.DatabaseHelper;
+import com.example.movie2.Database.LocalStorageDb;
 import com.example.movie2.Model.MovieItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
@@ -37,7 +37,7 @@ public class MainFragment extends Fragment implements MovieItemAdapter.AddMovie 
 
     private Utils utils;
 
-    private DatabaseHelper databaseHelper;
+    private LocalStorageDb localStorageDb;
     private SQLiteDatabase database;
 
 
@@ -47,8 +47,8 @@ public class MainFragment extends Fragment implements MovieItemAdapter.AddMovie 
         View view = inflater.inflate(R.layout.fragmentt_main, container, false);
         initViews(view);
 
-        databaseHelper = new DatabaseHelper(getActivity());
-        database = databaseHelper.getReadableDatabase();
+        localStorageDb = new LocalStorageDb(getActivity());
+        database = localStorageDb.getReadableDatabase();
 
         initBottomNavigation();
 
@@ -75,14 +75,14 @@ public class MainFragment extends Fragment implements MovieItemAdapter.AddMovie 
         suggestedItemsRecView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
         popularItemsRecView.setLayoutManager(new LinearLayoutManager(getActivity(), RecyclerView.HORIZONTAL, false));
 
-        MyAsyncTask task1 = new MyAsyncTask(newMoviesItemAdapter, getActivity(), 2);
-        task1.execute();
-        MyAsyncTask task2 = new MyAsyncTask(TrendingMoviesItemAdapter, getActivity(), 3);
-        task2.execute();
-        MyAsyncTask task3 = new MyAsyncTask(suggestedMovieItemAdapter, getActivity(), 2);
-        task3.execute();
-        MyAsyncTask task4 = new MyAsyncTask(popularMoviesItemAdapter, getActivity(), 3);
-        task4.execute();
+//        MyAsyncTask task1 = new MyAsyncTask(newMoviesItemAdapter, getActivity(), 2);
+//        task1.execute();
+//        MyAsyncTask task2 = new MyAsyncTask(TrendingMoviesItemAdapter, getActivity(), 3);
+//        task2.execute();
+//        MyAsyncTask task3 = new MyAsyncTask(suggestedMovieItemAdapter, getActivity(), 2);
+//        task3.execute();
+//        MyAsyncTask task4 = new MyAsyncTask(popularMoviesItemAdapter, getActivity(), 3);
+//        task4.execute();
         //updateRecView();
     }
 
@@ -178,7 +178,7 @@ public class MainFragment extends Fragment implements MovieItemAdapter.AddMovie 
     @Override
     public void onAddingResult(MovieItem movie) {
         Log.d(TAG, "onAddingResult: trying to add movie : " + movie.getTitle() + " to watch list");
-        databaseHelper.insert(database, movie);
+        localStorageDb.insert(database, movie);
     }
 
     @Override

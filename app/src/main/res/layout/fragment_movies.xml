@@ -58,6 +58,7 @@
                 android:layout_marginTop="8dp" />
 
             <androidx.recyclerview.widget.RecyclerView
+                android:layout_marginBottom="8dp"
                 android:id="@+id/mainRecView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

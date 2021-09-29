@@ -9,4 +9,6 @@
     <color name="blue_gray">#38393E</color>
     <color name="secondary_text">#80ffffff</color>
 
+    <color name="overlay">#99000000</color>
+
 </resources>
