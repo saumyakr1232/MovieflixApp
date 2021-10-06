@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,6 +22,7 @@ import com.example.movie2.Adapter.SmallBackDropRecViewAdp;
 import com.example.movie2.Database.DatabaseAsyncTask;
 import com.example.movie2.Database.DatabaseObserver;
 import com.example.movie2.Database.LocalStorageDb;
+import com.example.movie2.HomeActivity;
 import com.example.movie2.R;
 
 import java.util.ArrayList;
@@ -28,6 +30,7 @@ import java.util.ArrayList;
 public class MoviesFragment extends Fragment implements DatabaseObserver {
 
     private RecyclerView mainRecView, bannerRecView, watchListRecView;
+    private TextView seeAllWatchListTV;
     private MainRecViewAdapter mainRecViewAdapter;
     private BigBackDropRecViewAdp bigBackDropRecViewAdp;
     private SmallBackDropRecViewAdp smallBackDropRecViewAdp;
@@ -78,6 +81,11 @@ public class MoviesFragment extends Fragment implements DatabaseObserver {
         });
 
 
+        seeAllWatchListTV.setOnClickListener(v -> {
+            HomeActivity activity = (HomeActivity) getActivity();
+            activity.toWatchListFragment();
+        });
+
         return view;
     }
 
@@ -85,6 +93,7 @@ public class MoviesFragment extends Fragment implements DatabaseObserver {
         mainRecView = view.findViewById(R.id.mainRecView);
         bannerRecView = view.findViewById(R.id.bannerRecView);
         watchListRecView = view.findViewById(R.id.watchListRecView);
+        seeAllWatchListTV = view.findViewById(R.id.seeAllTextView);
         bannerRecView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));
         mainRecView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.VERTICAL, false));
         watchListRecView.setLayoutManager(new LinearLayoutManager(getContext(), RecyclerView.HORIZONTAL, false));

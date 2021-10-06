@@ -65,6 +65,10 @@ public class HomeActivity extends AppCompatActivity {
 
     }
 
+    public void toWatchListFragment() {
+        tabLayout.selectTab(tabLayout.getTabAt(2));
+    }
+
     @Override
     protected void onStart() {
         super.onStart();

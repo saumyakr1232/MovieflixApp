@@ -5,13 +5,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteException;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -53,36 +51,6 @@ public class MovieItemAdapter extends RecyclerView.Adapter<MovieItemAdapter.View
 
             }
         });
-        holder.btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    if (localStorageDb.insert(database, items.get(position))) {
-                        Toast.makeText(context, items.get(position).getTitle() + " is Added to your watch list successfully", Toast.LENGTH_SHORT).show();
-                    } else {
-                        androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(context);
-                        builder.setMessage("You Already Added this Movie to your Watch List");
-
-                        builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-
-                            }
-                        });
-                        builder.setCancelable(false);
-                        builder.create().show();
-                    }
-
-                } catch (SQLiteException e) {
-                    e.printStackTrace();
-                }
-
-            }
-        });
-
-        if ("want to watch".equals(type)) {
-            holder.btnAdd.setVisibility(View.GONE);
-        }
 
 
 
@@ -177,7 +145,6 @@ public class MovieItemAdapter extends RecyclerView.Adapter<MovieItemAdapter.View
 //            name = (TextView) itemView.findViewById(R.id.txtItemName);
 //            date = (TextView) itemView.findViewById(R.id.txtdate);
 //            rating = (TextView) itemView.findViewById(R.id.txtRating);
-            btnAdd = (ImageView) itemView.findViewById(R.id.btnAdd);
             parent = (CardView) itemView.findViewById(R.id.parent);
 
         }

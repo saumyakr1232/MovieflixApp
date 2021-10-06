@@ -15,12 +15,5 @@
         android:layout_height="150dp"
         android:src="@drawable/ic_launcher_background" />
 
-    <ImageView
-        android:id="@+id/btnAdd"
-        android:layout_width="32dp"
-        android:layout_height="40dp"
-        android:background="#74070707"
-        android:src="@drawable/ic_icon_add"
-        android:textColor="#FFF" />
 
 </androidx.cardview.widget.CardView>
