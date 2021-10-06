@@ -20,6 +20,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class SignupActivity extends AppCompatActivity {
 
@@ -46,7 +48,9 @@ public class SignupActivity extends AppCompatActivity {
                 if (emailEditText.getText().toString().isEmpty() || nameEditText.getText().toString().isEmpty()
                         || passwordEditText.getText().toString().isEmpty() || confPassEditText.getText().toString().isEmpty()) {
                     Toast.makeText(SignupActivity.this, "Empty Fields are not allowed", Toast.LENGTH_LONG).show();
-                } else if (Objects.equals(passwordEditText.getText().toString(), confPassEditText.getText().toString())) {
+                } else if (!Utils.isValidEmail(emailEditText.getText().toString())){
+                    Toast.makeText(SignupActivity.this, "Email is not valid", Toast.LENGTH_SHORT).show();
+                }else if (Objects.equals(passwordEditText.getText().toString(), confPassEditText.getText().toString())) {
                     mAuth.createUserWithEmailAndPassword(emailEditText.getText().toString(), passwordEditText.getText().toString())
                             .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                                 @Override
