@@ -29,23 +29,23 @@ public class HomeActivity extends AppCompatActivity {
 
 
     private boolean isBound = false;
-    private SampleService mService;
+    //private SampleService mService;
 
-    private ServiceConnection serviceConnection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            SampleService.LocalBinder binder =
-                    (SampleService.LocalBinder) service;
-            mService = binder.getBinder();
-
-            isBound = true;
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            isBound = false;
-        }
-    };
+//    private ServiceConnection serviceConnection = new ServiceConnection() {
+//        @Override
+//        public void onServiceConnected(ComponentName name, IBinder service) {
+//            SampleService.LocalBinder binder =
+//                    (SampleService.LocalBinder) service;
+//            mService = binder.getBinder();
+//
+//            isBound = true;
+//        }
+//
+//        @Override
+//        public void onServiceDisconnected(ComponentName name) {
+//            isBound = false;
+//        }
+//    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,8 +73,8 @@ public class HomeActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        Intent intent = new Intent(this, SampleService.class);
-        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
+//        Intent intent = new Intent(this, SampleService.class);
+//        bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE);
 
     }
 
@@ -119,7 +119,7 @@ public class HomeActivity extends AppCompatActivity {
         super.onStop();
 
         if (isBound) {
-            unbindService(serviceConnection);
+            //unbindService(serviceConnection);
         }
     }
 }

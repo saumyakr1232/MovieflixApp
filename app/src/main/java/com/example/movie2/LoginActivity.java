@@ -48,23 +48,28 @@ public class LoginActivity extends AppCompatActivity {
                 if (editTextEmail.getText().toString().isEmpty() || editTxtPassword.getText().toString().isEmpty()) {
                     Toast.makeText(LoginActivity.this, "Empty Fields are not allowed", Toast.LENGTH_LONG).show();
                     return;
-                }
-                mAuth.signInWithEmailAndPassword(editTextEmail.getText().toString(), editTxtPassword.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            Toast.makeText(LoginActivity.this, "Logged in Successfully", Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
-                            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent);
-                            utils.setSignedIn(true);
+                } else if (!Utils.isValidEmail(editTextEmail.getText().toString())) {
+                    Toast.makeText(LoginActivity.this, "Email is not valid", Toast.LENGTH_SHORT).show();
 
-                        } else {
-                            Toast.makeText(LoginActivity.this, "Failed to login ", Toast.LENGTH_LONG).show();
-                            utils.setSignedIn(false);
+                }else {
+                    mAuth.signInWithEmailAndPassword(editTextEmail.getText().toString(), editTxtPassword.getText().toString()).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(LoginActivity.this, "Logged in Successfully", Toast.LENGTH_LONG).show();
+                                Intent intent = new Intent(LoginActivity.this, HomeActivity.class);
+                                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                startActivity(intent);
+                                utils.setSignedIn(true);
+
+                            } else {
+                                Toast.makeText(LoginActivity.this, "Failed to login ", Toast.LENGTH_LONG).show();
+                                utils.setSignedIn(false);
+                            }
                         }
-                    }
-                });
+                    });
+                }
+
             }
         });
 
