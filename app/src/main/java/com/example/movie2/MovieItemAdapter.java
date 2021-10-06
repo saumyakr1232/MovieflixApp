@@ -26,6 +26,7 @@ public class MovieItemAdapter extends RecyclerView.Adapter<MovieItemAdapter.View
     private Context context;
     private ArrayList<MovieItem> items = new ArrayList<>();
     private String type = "";
+    final String URL = "https://image.tmdb.org/t/p/w1280";
 
     private LocalStorageDb localStorageDb;
     private SQLiteDatabase database;
@@ -34,12 +35,11 @@ public class MovieItemAdapter extends RecyclerView.Adapter<MovieItemAdapter.View
     public void onBindViewHolder(@NonNull ViewHolder holder, final int position) {
         Log.d(TAG, "onBindViewHolder: called");
 //        holder.name.setText(items.get(position).getTitle());
-        String url = "https://image.tmdb.org/t/p/w1280";
 //        holder.date.setText(items.get(position).getRelease_date());
 //        holder.rating.setText(String.valueOf(items.get(position).getVote_average()));
         Glide.with(context)
                 .asBitmap()
-                .load(url + items.get(position).getPoster_path())
+                .load(URL + items.get(position).getPoster_path())
                 .into(holder.image);
         holder.parent.setOnClickListener(new View.OnClickListener() {
             @Override
