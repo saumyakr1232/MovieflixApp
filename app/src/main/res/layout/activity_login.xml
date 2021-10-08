@@ -5,96 +5,117 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/colorPrimaryDark"
+    android:windowSoftInputMode="adjustResize"
     tools:context=".LoginActivity">
 
 
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/signInButton">
+
+       <RelativeLayout
+           android:layout_width="match_parent"
+           android:layout_height="match_parent">
+
+           <LinearLayout
+               android:id="@+id/header"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:layout_marginStart="16dp"
+               android:layout_marginTop="64dp"
+               android:layout_marginEnd="16dp"
+               android:gravity="center_horizontal"
+               android:orientation="vertical">
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:text="Welcome Back!"
+                   android:textColor="@android:color/primary_text_dark"
+                   android:textSize="24sp"
+                   android:textStyle="bold" />
+
+               <TextView
+                   android:layout_width="wrap_content"
+                   android:layout_height="wrap_content"
+                   android:layout_marginTop="12dp"
+                   android:text="Please sign in to you account"
+                   android:textColor="@android:color/secondary_text_dark"
+                   android:textSize="16sp" />
+
+               <EditText
+                   android:id="@+id/editTxtEmail"
+                   style="@style/sign_in"
+                   android:layout_width="match_parent"
+                   android:layout_height="72dp"
+                   android:layout_marginTop="32dp"
+                   android:autofillHints="emailAddress"
+                   android:background="@drawable/edit_txt_background"
+                   android:hint="@string/email"
+                   android:inputType="textEmailAddress" />
+
+               <EditText
+                   android:id="@+id/editTextPass"
+                   style="@style/sign_in"
+                   android:layout_width="match_parent"
+                   android:layout_height="72dp"
+                   android:layout_marginTop="16dp"
+                   android:background="@drawable/edit_txt_background"
+                   android:drawableEnd="@drawable/ic_outline_remove_red_eye_24"
+                   android:hint="@string/password"
+                   android:inputType="textPassword"
+                   android:paddingStart="16dp"
+                   android:paddingEnd="16dp"
+                   android:selectAllOnFocus="true" />
+
+           </LinearLayout>
+
+           <TextView
+               android:id="@+id/forgotPasswordTV"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"
+               android:layout_below="@id/header"
+               android:layout_alignParentEnd="true"
+               android:layout_marginStart="16dp"
+               android:layout_marginTop="16dp"
+               android:layout_marginEnd="16dp"
+               android:layout_marginBottom="16dp"
+               android:clickable="true"
+               android:focusable="true"
+               android:minHeight="48dp"
+               android:padding="8dp"
+               android:text="Forgot Password?"
+               android:textAlignment="textEnd"
+               android:textColor="@android:color/secondary_text_dark"
+               android:textSize="14sp"
+               android:textStyle="bold" />
+
+       </RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/signInButton"
+        android:layout_width="match_parent"
+        android:layout_height="72dp"
+        android:layout_above="@id/footer"
+        android:text="Sign In"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:cornerRadius="12dp" />
+
     <LinearLayout
-        android:id="@+id/header"
+        android:id="@+id/footer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="16dp"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Welcome Back!"
-            android:textColor="@android:color/primary_text_dark"
-            android:textSize="24sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:text="Please sign in to you account"
-            android:textColor="@android:color/secondary_text_dark"
-            android:textSize="16sp" />
-
-        <EditText
-            style="@style/sign_in"
-            android:id="@+id/editTxtEmail"
-            android:layout_width="match_parent"
-            android:layout_height="72dp"
-            android:layout_marginTop="32dp"
-            android:background="@drawable/edit_txt_background"
-            android:hint="@string/email"
-            android:inputType="textEmailAddress" />
-
-        <EditText
-            android:id="@+id/editTextPass"
-            android:selectAllOnFocus="true"
-            style="@style/sign_in"
-            android:layout_width="match_parent"
-            android:layout_height="72dp"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/edit_txt_background"
-            android:hint="@string/password"
-            android:drawableEnd="@drawable/ic_outline_remove_red_eye_24"
-            android:inputType="textPassword"
-            android:paddingStart="16dp"
-            android:paddingEnd="16dp" />
-
-    </LinearLayout>
-
-    <TextView
-        android:id="@+id/forgotPasswordTV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/header"
-        android:layout_alignParentEnd="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:layout_marginBottom="16dp"
-        android:clickable="true"
-        android:focusable="true"
-        android:padding="8dp"
-        android:text="Forgot Password?"
-        android:textAlignment="textEnd"
-        android:textColor="@android:color/secondary_text_dark"
-        android:textSize="14sp"
-        android:textStyle="bold" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/forgotPasswordTV"
+        android:layout_marginBottom="40dp"
         android:layout_alignParentBottom="true"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:gravity="center_vertical"
         android:orientation="vertical">
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/signInButton"
-            android:layout_width="match_parent"
-            android:layout_height="72dp"
-            android:text="Sign In"
-            app:cornerRadius="12dp" />
 
         <androidx.cardview.widget.CardView
             android:id="@+id/googleSignInButton"
