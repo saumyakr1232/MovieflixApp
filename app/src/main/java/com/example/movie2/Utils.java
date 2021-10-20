@@ -27,6 +27,9 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
+/**
+ * Simple Utility Class
+ */
 public class Utils {
     private static final String TAG = "Utils";
     public static final String DATABASE_NAME = "fake_database";
@@ -39,16 +42,20 @@ public class Utils {
         this.context = context;
 
     }
+
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
-    public static boolean isValidEmail(String emailStr){
+    public static boolean isValidEmail(String emailStr) {
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
         return matcher.find();
 
     }
 
 
+    /**
+     * Initialize database
+     */
     public void initDataBase() {
         Log.d(TAG, "initDataBase: started");
         SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
@@ -64,6 +71,9 @@ public class Utils {
 
     }
 
+    /**
+     * get item from api and save in local database / Shared Prefs
+     */
     public void initAllItems() {
         Log.d(TAG, "initAllItems: created");
         Retrofit retrofit = new Retrofit.Builder()
@@ -307,6 +317,11 @@ public class Utils {
 
     }
 
+    /**
+     * Fetch all movies items and save
+     *
+     * @return Arraylist of movieItem
+     */
     public ArrayList<MovieItem> getAllItems() {
         Log.d(TAG, "getAllItems: called");
         Gson gson = new Gson();
@@ -332,6 +347,11 @@ public class Utils {
 
     }
 
+    /**
+     * Fetch trending item from the api
+     *
+     * @return List of MovieItems
+     */
     public ArrayList<MovieItem> getTrendingItems() {
         Log.d(TAG, "getTrendingItems: called");
         Gson gson = new Gson();
@@ -355,6 +375,11 @@ public class Utils {
 
     }
 
+    /**
+     * Fetch upcoming English movies
+     *
+     * @return List of MovieItems
+     */
     public ArrayList<MovieItem> getUpcomingEngMovies() {
         Log.d(TAG, "getTrendingItems: called");
         Gson gson = new Gson();
@@ -449,7 +474,6 @@ public class Utils {
             return details;
         }
         return new MovieDetails();
-
 
 
     }
