@@ -3,12 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".MovieItemActivity">
 
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/btnAddToWatchList"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="60dp"
+        app:cornerRadius="8dp"
         android:layout_marginLeft="15dp"
         android:layout_marginTop="10dp"
         android:layout_marginRight="15dp"
@@ -86,17 +88,27 @@
                 android:layout_below="@id/firstRelLayout"
                 android:layout_marginTop="20dp">
 
-                <ImageView
+                <androidx.cardview.widget.CardView
                     android:layout_width="120dp"
+                    android:id="@+id/imgItemPoster1"
                     android:layout_height="180dp"
-                    android:src="@color/colorPrimary"
-                    android:id="@+id/imgItemPoster" />
+                    android:elevation="5dp"
+                    app:cardCornerRadius="8dp">
+
+                    <ImageView
+                        android:id="@+id/imgItemPoster"
+                        android:layout_width="120dp"
+                        android:layout_height="180dp"
+                        android:src="@color/colorPrimary" />
+
+                </androidx.cardview.widget.CardView>
+
 
                 <RelativeLayout
                     android:layout_width="wrap_content"
                     android:layout_height="180dp"
                     android:id="@+id/genreRelLayout"
-                    android:layout_toRightOf="@id/imgItemPoster"
+                    android:layout_toRightOf="@id/imgItemPoster1"
                     android:layout_marginLeft="20dp">
 
                     <androidx.recyclerview.widget.RecyclerView
