@@ -42,13 +42,14 @@ public class Utils {
     public static final Pattern VALID_EMAIL_ADDRESS_REGEX =
             Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
 
+// this method validates the email and checks the user authentication.
     public static boolean isValidEmail(String emailStr){
         Matcher matcher = VALID_EMAIL_ADDRESS_REGEX.matcher(emailStr);
         return matcher.find();
 
     }
 
-
+// the initDataBase function is initializing the local database using shared preferences
     public void initDataBase() {
         Log.d(TAG, "initDataBase: started");
         SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
@@ -64,6 +65,7 @@ public class Utils {
 
     }
 
+    // building a retrofit client for the api calling
     public void initAllItems() {
         Log.d(TAG, "initAllItems: created");
         Retrofit retrofit = new Retrofit.Builder()
@@ -73,7 +75,7 @@ public class Utils {
 
         RetrofitClient retrofitClient = retrofit.create(RetrofitClient.class);
 
-
+// api call to get all the movies from the database
         Call<ResponseObject> getAllMovies = retrofitClient.getAllMovies();
         getAllMovies.enqueue(new Callback<ResponseObject>() {
             @Override
@@ -103,6 +105,7 @@ public class Utils {
         });
 
 
+        // api call to get all the trending movies from the database
         Call<ResponseObject> getTrendingMovies = retrofitClient.getTrendingMovies();
         getTrendingMovies.enqueue(new Callback<ResponseObject>() {
             @Override
@@ -132,6 +135,7 @@ public class Utils {
         });
 
 
+        // api call to fetch all the new movies from the database
         Call<ResponseObject> getNewMovies = retrofitClient.getNewMovies();
         getNewMovies.enqueue(new Callback<ResponseObject>() {
             @Override
@@ -158,6 +162,7 @@ public class Utils {
             }
         });
 
+        // api call to get list of movies from the database which are now playing
         Call<ResponseObject> getNowPlayingMovies = retrofitClient.getNowPlayingMovies();
         getNowPlayingMovies.enqueue(new Callback<ResponseObject>() {
             @Override
@@ -187,7 +192,7 @@ public class Utils {
             }
         });
 
-
+//      api call to fetch all the top rated english movies from the database
         Call<ResponseObject> getTopRatedEnglishMovies = retrofitClient.getTopRatedEnglishMovies();
         getTopRatedEnglishMovies.enqueue(new Callback<ResponseObject>() {
             @Override
@@ -218,6 +223,7 @@ public class Utils {
         });
 
 
+        // api call to get the top rated hindi movie from the list in database
         Call<ResponseObject> getTopRatedHindiMovie = retrofitClient.getTopRatedHindiMovies();
         getTopRatedHindiMovie.enqueue(new Callback<ResponseObject>() {
             @Override
@@ -246,6 +252,7 @@ public class Utils {
             }
         });
 
+        // api call to get the upcoming hindi movies from the database
         Call<ResponseObject> getUpcomingHindiMovies = retrofitClient.getUpcomingHindiMovies();
         getUpcomingHindiMovies.enqueue(new Callback<ResponseObject>() {
             @Override
@@ -274,6 +281,7 @@ public class Utils {
             }
         });
 
+        // api call to get the upcoming english movies from the database
         Call<ResponseObject> getUpcomingEngMovies = retrofitClient.getUpcomingEngMovies();
         getUpcomingEngMovies.enqueue(new Callback<ResponseObject>() {
             @Override
@@ -399,7 +407,7 @@ public class Utils {
 
     }
 
-
+// find all the details regarding a certain movie from the database. e.g for a movie id this function will fetch all the related details.
     public void findMoviesDetails(final String id) {
         Log.d(TAG, "findMoviesDetails: called");
 
@@ -453,7 +461,7 @@ public class Utils {
 
 
     }
-
+// search from the database has been implemented here , we can search for the movie from the database
     public void searchMovies(String url) {
         Log.d(TAG, "searchMovies: called");
 
@@ -518,7 +526,7 @@ public class Utils {
         editor.commit();
 
     }
-
+// to check in the local database if the user is signedIn already
     public boolean isSignedIn() {
         SharedPreferences sharedPreferences = context.getSharedPreferences(DATABASE_NAME, Context.MODE_PRIVATE);
         return sharedPreferences.getBoolean("signedIn", false);
