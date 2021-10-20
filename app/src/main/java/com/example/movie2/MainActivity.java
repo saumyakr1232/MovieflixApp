@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = "MainActivity";
     private Utils utils;
+    ImageView imageView ;
 
 
     @Override
@@ -17,6 +18,9 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: created");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        imageView = findViewById(R.id.landing_page_iv);
+        Glide.with(this).asBitmap().load("https://image.tmdb.org/t/p/w1280/lmZFxXgJE3vgrciwuDib0N8CfQo.jpg").centerCrop().into(imageView);
 
         utils = new Utils(this);
         utils.initDataBase();
