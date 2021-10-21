@@ -13,17 +13,20 @@
         android:id="@+id/firstRelLayout">
 
         <EditText
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/SearchString"
+            android:background="@drawable/new_drawable_search_edit_text"
             android:hint="@string/search_for_movies" />
 
         <ImageView
+            android:id="@+id/btnSearch"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:src="@drawable/ic_search2"
+            android:clickable="true"
             android:layout_alignParentRight="true"
-            android:id="@+id/btnSearch" />
+            android:src="@drawable/ic_search2" />
 
 
     </RelativeLayout>
@@ -47,11 +50,11 @@
 
         <com.google.android.material.chip.ChipGroup
             android:id="@+id/genreChipGroup"
+            style="@style/Widget.MaterialComponents.Chip.Filter"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/popularGenre"
             android:layout_marginTop="0dp"
-            style="@style/Widget.MaterialComponents.Chip.Filter"
             app:singleLine="true">
 
             <com.google.android.material.chip.Chip

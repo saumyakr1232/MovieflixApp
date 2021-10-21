@@ -48,7 +48,7 @@ public class SearchActivity extends AppCompatActivity {
         transaction.replace(R.id.fragment_container, new SearchFirstFragment());
         transaction.commit();
 
-        final Intent intent = new Intent(SearchActivity.this, SearchResultsActivity.class);
+        final Intent intent = new Intent(SearchActivity.this, SearchActivity.class);
 
 
         btnSearch.setOnClickListener(new View.OnClickListener() {
